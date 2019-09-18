@@ -1,0 +1,150 @@
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 300px;
+  margin: 10px 50px 10px 0;
+
+  .app-conf {
+    flex: 1;
+    display: flex;
+    flex-flow: row nowrap;
+  
+    .team.color {
+      height: 100%;
+      width: 8px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+
+      &.opensource {
+        border: 1px solid lightgrey;
+        border-right: none;
+        background: whitesmoke;
+      }
+    }
+
+    .app-conf-content {
+      height: 100%;
+      flex: 1;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      display: flex;
+      flex-flow: column nowrap;
+      border: 1px solid lightgray;
+      border-left: none;
+
+      .header {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 10px;
+
+        .group {
+          position: absolute;
+          left: 10px;
+          text-transform: uppercase;
+        }
+
+        .app-name {
+          font-weight: bold;
+          text-transform: capitalize;
+        }
+      }
+
+      .form.params {
+        padding:15px;
+        
+        form {
+          .param {
+            &:not(:first-child){
+              margin-top: 20px; 
+            }
+
+            .field {
+
+              label {
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                font-weight: bold;
+                padding: 0 5px;
+
+                .param-type {
+                  font-weight: 400;
+                  font-size: .9em;
+                  font-style: italic;
+                }
+              }
+
+              &>input, &>select{
+                width: 100%;
+                padding: 4px 15px;
+                height: 32px;
+                border-radius: 5px;
+                border: 1px solid #ACACAC;
+                background: white;
+
+                &:focus {
+                  outline: none;
+                }
+              }
+
+              .errors {
+                position: relative;
+                font-size: .8em;
+                line-height: 1em;
+                padding: 5px;
+                border: 1px solid red;
+                color: red;
+                border-radius: 5px;
+                background: white;
+                margin-top: 5px;
+
+                &:before, &:after {
+                  bottom: 100%;
+                  left: 50%;
+                  border: solid transparent;
+                  content: " ";
+                  height: 0;
+                  width: 0;
+                  position: absolute;
+                  pointer-events: none;
+                }
+                
+                &:after {
+                  border-bottom-color: #ffffff;
+                  border-width: 4px;
+                  margin-left: -4px;
+                }
+
+                &:before {
+                  border-bottom-color: #f50202;
+                  border-width: 5px;
+                  margin-left: -5px;
+                }
+
+                .err {
+                  &:not(:first-child){
+                    margin-top: 5px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .validate {
+        width: 75%;
+        align-self: center;
+
+        .button {
+          background-color: grey;
+          color:whitesmoke;
+          padding: 5px;
+          text-align: center;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}

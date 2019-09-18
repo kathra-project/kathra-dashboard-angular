@@ -1,0 +1,41 @@
+.form([formGroup]="implemForm")
+  .row
+    .field
+      label(for="name") Step 1 - Name of the Implementation
+      input(type="text" formControlName="name" id="implemName")
+
+    .field
+      label(for="implemTeam") Step 2 - Selected team for the Implementation
+      select(formControlName="team" id="implemTeam")
+        option(selected value="") Team
+        option(*ngFor="let group of user.gitlabGroups", [value]="group.path") {{ group.name }}
+  .row
+    .field
+      label(for="implemLanguage") Step 3 - Selected language for the Implementation
+      select(formControlName="language" id="implemLanguage")
+        option(selected value="") Language
+        option([value]="'JAVA'") Java
+        option([value]="'PYTHON'") Python
+  .row
+    .field.desc
+      label(for="desc") Step 4 - Description of the Implementation
+      input(type="text" formControlName="desc" id="implemDesc")
+
+  .row
+    .field.response(*ngIf="newApp?.implem?.status")
+      .implem-status
+        .strong.label Status:
+        .status.green.loader(*ngIf="this.kathraStatus.isPending(newApp?.implem)")
+        i.status.green.checkmark.icon(*ngIf="this.kathraStatus.isReady(newApp?.implem)")
+        i.status.red.remove.icon(*ngIf="this.kathraStatus.isError(newApp?.implem)")
+        .strong.value {{ newApp.implem.status }}
+      .label This operations may take a few minutes.
+
+.controls
+  .button.done.hidden([routerLink]="['/kathra', 'applications']")
+    i.left.chevron.icon
+    span.text FINISH
+
+  .button.validate((click)="validate()", [ngClass]="{'disabled': !this.implemForm.valid}")
+    i.big.circle.outline.icon
+    span.text VALIDATE

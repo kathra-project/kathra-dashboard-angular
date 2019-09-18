@@ -1,0 +1,28 @@
+.row.configuration
+  .col.preconfigured
+    .title PRE-CONFIGURED
+    .configured-content
+      kathra-app(*ngFor="let app of noParamsApps", [appId]="app.id", [display]="'compact'")
+
+  .col.configurable
+    .title CONFIGURABLE
+    .configuration-content
+      kathra-app-conf(*ngFor="let app of appsToConfigure", [appId]="app.id", (processConfiguredApp)="addConfiguredApp($event)")
+
+  .col.deploy
+    .deploy-content
+      .title Configuration Complete
+      .icon
+        img(src="/assets/img/icons/check-circle.svg")
+      .text Click below to deploy your Environment
+      .button((click)="deploy()") DEPLOY
+
+.row.controls
+  .first((click)="autoShift('start')")
+    i.angle.double.left.big.icon
+  .backward((click)="autoShift('left')")
+    i.angle.left.big.icon
+  .forward((click)="autoShift('right')")
+    i.angle.right.big.icon
+  .last
+    i.angle.double.right.big.icon((click)="autoShift('end')")

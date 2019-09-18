@@ -1,0 +1,16 @@
+
+.sgm2.icon.input((keydown)="preventDefaultBehaviours($event)", (keyup)="keyUp.next($event)")
+  input([placeholder]="placeholder")
+  i.search.icon
+
+.tags
+  .tag.cat(*ngFor="let opt of validatedOptionsList")
+      span.prefix(*ngIf="opt.prefix") {{ opt.prefix }}
+      span.content {{ opt.value }}
+      span.del 
+        i.white.remove.icon((click)="removeOption(opt)")
+
+.options.list(*ngIf="optionsList.length != 0")
+    .option(*ngFor="let opt of optionsList", [attr.val]="opt.value", (mouseenter)="focusOption($event)", (click)="selectOption($event)")
+      .prefix(*ngIf="opt.prefix") {{ opt.prefix | uppercase }}
+      .value {{ opt.value }}

@@ -1,0 +1,79 @@
+.content
+  .title DEV STUDIO
+
+  .gitlab.app
+      a.button(target="_blank" href="https://git.kathra.org")
+        i.large.left.aligned.right.long.arrow.icon
+        | Gitlab
+
+  a.button.create.new.comp([routerLink]="['new', 'component']", *ngIf="selectedTab == 'components'", [@hidingAnimation])
+    i.plus.icon
+    | Create a new Component
+
+  .tabs
+    .tools
+      .search
+        .sgm2.icon.input
+          input([(ngModel)]="filter" placeholder="Search & filter")
+          i.search.icon
+
+      form.filters([formGroup]="ownerForm")
+        .owner-filters
+          .radio.filter
+            label(for="owner-me") ME
+            .radio
+              input(type="radio" formControlName="owner" id="owner-me" name="owner" value="me", (change)="refreshFilters()")
+              label(for="owner-me")
+          .radio.filter
+            label(for="owner-team") TEAM
+            .radio
+              input(type="radio" formControlName="owner" id="owner-team" name="owner" value="team", (change)="refreshFilters()")
+              label(for="owner-team")
+          .radio.filter
+            label(for="owner-all") ALL
+            .radio
+              input(type="radio" formControlName="owner" id="owner-all" name="owner" value="all", (change)="refreshFilters()")
+              label(for="owner-all")
+
+    .tabs.headers
+      .tab.header((click)="selectTab('components')", [ngClass]="{'active': selectedTab == 'components'}") COMPONENTS
+      .tab.splitter
+      .tab.header((click)="selectTab('implementations')", [ngClass]="{'active': selectedTab == 'implementations'}") IMPLEMENTATIONS
+    
+    .tabs.content
+      .sorters
+        .name.sort
+          .wrapper((click)="updateSort('name')", [ngClass]="{'active': this.sort.prop == 'name'}")
+            i.sort.content.descending.icon
+            | Name
+        .group.sort(*ngIf="ownerForm.controls.owner.value == 'team'")
+          .wrapper((click)="updateSort('owner')", [ngClass]="{'active': this.sort.prop == 'owner'}")
+            i.sort.content.descending.icon
+            | Team
+        .flex-filler
+        .date.sort
+          .wrapper((click)="updateSort('createdAt')", [ngClass]="{'active': this.sort.prop == 'createdAt'}")
+            i.sort.content.descending.icon
+            | Date
+
+      .loader
+        i.huge.white.loading.spinner.icon
+      .components-list(*ngIf="selectedTab == 'components'")
+        .sorted(*ngIf="ownerForm.controls.owner.value == 'team'")
+          .team-wrapper(*ngFor="let team of extractTeams(this.components)")
+            .team-name(*ngIf="filteredByTeam(team, filteredComps).length>0") {{ team }}
+            kathra-comp(*ngFor="let comp of filteredByTeam(team, filteredComps)", [comp]="comp")
+        .unsorted(*ngIf="ownerForm.controls.owner.value == 'me'")
+          kathra-comp(*ngFor="let comp of filteredByOwner(filteredComps)", [comp]="comp")
+        .unsorted(*ngIf="ownerForm.controls.owner.value == 'all'")
+          kathra-comp(*ngFor="let comp of filteredComps", [comp]="comp")
+            
+      .implementations-list(*ngIf="selectedTab == 'implementations'")
+        .sorted(*ngIf="ownerForm.controls.owner.value == 'team'")
+          .team-wrapper(*ngFor="let team of extractTeams(this.implementations)")
+            .team-name(*ngIf="filteredByTeam(team, filteredImplems).length>0") {{ team }}
+            kathra-implem(*ngFor="let implem of filteredByTeam(team, filteredImplems)", [implem]="implem", [comp]="findComponent(implem)")
+        .unsorted(*ngIf="ownerForm.controls.owner.value == 'me'")
+          kathra-implem(*ngFor="let implem of filteredByOwner(filteredImplems)", [implem]="implem", [comp]="findComponent(implem)")
+        .unsorted(*ngIf="ownerForm.controls.owner.value == 'all'")
+          kathra-implem(*ngFor="let implem of filteredImplems", [implem]="implem", [comp]="findComponent(implem)")

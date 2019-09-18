@@ -1,0 +1,29 @@
+div.commits-table
+  table.commits.ui.celled.striped.table
+    thead.full-width
+      tr
+        th(colspan='3')
+          | Source Repository Commits - {{ this._currentBranch }}
+        th.right.aligned
+          select.ui.floated.dropdown( (change)="this.updateCommits($event.target.value)")
+            option(*ngFor="let branch of this.branches", [selected]="branch == _currentBranch", [value]="branch") {{ branch }}
+    tbody.dimmable
+      tr
+        i.ui.active.inverted.dimmer
+          i.ui.loader
+
+      tr(*ngFor="let commit of this.commits")
+        td.collapsing
+          | {{ commit.id }}
+        td {{ commit.author }}
+        td {{ commit.message }}
+        td.right.aligned.collapsing {{ commit.date | date: 'dd/MM/yyyy'  }}
+
+      tr(*ngIf="this.commits?.length == 0")
+        td.collapsing
+        td.full-width No commits for this branch
+        td.collapsing
+
+    tfoot.full-width
+      tr
+        th(colspan='4')

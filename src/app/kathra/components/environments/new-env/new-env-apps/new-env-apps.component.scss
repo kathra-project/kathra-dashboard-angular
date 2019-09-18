@@ -1,0 +1,229 @@
+@import '../../../../../../assets/styles/vars.scss';
+
+:host {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+
+  .apps.selection {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 4vh;
+  
+    .col {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      max-width: 30vw;
+      min-width: 300px;
+      width: 300px;
+
+      label {
+        margin-bottom: 10px;
+      }
+
+      .button{
+        text-align: center;
+        color: whitesmoke;
+        width: 80%;
+        background: none;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: Raleway;
+        cursor: pointer;
+
+        &.applications {
+          background-color: $env-applications-color;
+        }
+        &.catalogue {
+          background-color: $env-catalog-color;
+        }
+        &.datasources {
+          background-color: $env-datasources-color;
+        }
+
+        &.disabled {
+          cursor: default;
+          opacity: .7;
+        }
+      }
+    }
+  }
+
+  .apps.list {
+    flex: 1;
+    width: 80%;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    padding: 0 20px;
+
+    .app.controls {
+      width: fit-content;
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin: 10px 0 10px 20px;
+
+      .ctrl.box {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+        
+        &:not(:first-child){
+          margin-left: 30px;
+        }
+
+        > .app {
+          display: flex;
+          flex-flow: column nowrap;
+          align-items: center;
+          color: lightgrey;
+
+          &.active {
+            color: #393939;
+            cursor: pointer;
+            
+            .icon {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+
+    .list.content {
+      display: flex;
+      flex-flow: row wrap;
+      flex: 1;
+      width: 100%;
+      overflow-y: auto;
+
+      > .app {
+        position: relative;
+      }
+    }
+
+    .select-all {
+      .wrapper {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .selector {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 1px solid;
+      border-radius: 2px;
+      top: 25px;
+      right: 1.2vw;
+      cursor: pointer;
+
+      &.all-apps {
+        right: 0;
+        background: whitesmoke;
+        top: unset;
+
+        &:after {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          top: -3px;
+          left: -3px;
+          width: 20px;
+          height: 20px;
+          border: 1px solid;
+          border-radius: 3px;
+        }
+      }
+
+      label {
+        cursor: inherit;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        &:after {
+          content: '';
+          width: 13px;
+          height: 7px;
+          position: absolute;
+          top: 3px;
+          left: 3px;
+          border: 1px solid;
+          border-top: none;
+          border-right: none;
+          background: transparent;
+          opacity: 0;
+          transform: rotate(-45deg);
+          cursor: inherit;
+        }
+      }
+
+      input {
+        visibility: hidden;
+        cursor: inherit;
+        width: 20px;
+        height: 20px;
+
+        &:checked + label:after {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .controls {
+    height: 60px;
+    width: 100%;
+
+    .next.button {
+      padding: 8px;
+      background-color: grey;
+      color: whitesmoke;
+      border-radius: 4px;
+      width: 120px;
+      text-align: center;
+  
+      position: absolute;
+      bottom: 50px;
+      right: 50px;
+  
+      cursor: pointer;
+    }
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e3e3e3;
+    border: none;
+    border-radius: 50px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #e3e3e3;
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background: #e3e3e3;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+    border-radius: 50px;
+  }
+  ::-webkit-scrollbar-track:hover {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-track:active {
+    background: transparent;
+  }
+}

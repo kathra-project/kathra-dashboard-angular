@@ -1,0 +1,57 @@
+.app-conf
+  .team.color([style.backgroundColor]="app.licence !== 'opensource' ? getAppColor(app.licence, 'normal'):''", [ngClass]="{opensource : app.licence == 'opensource'}")
+  .app-conf-content
+    .header
+      .group {{ app.licence }}
+      .app-name {{ app.name }}
+    .form.params
+      form([formGroup]="requiredParamsForm")
+
+        .param(*ngFor="let param of app.parameters")
+          .wrapper([ngSwitch]="param.type")
+            
+            .field(*ngSwitchDefault="")
+              label(title="{{param.desc}}" id="{{app.name + '@' + param.name}}") {{ param.name }}
+                .param-type {{ param.type }}
+              input(type="text", id="{{app.name + '@' + param.name}}", formControlName="{{app.name + '@' + param.name}}")
+              .errors(*ngIf="requiredParamsForm.controls[app.name + '@' + param.name].errors && requiredParamsForm.controls[app.name + '@' + param.name].touched")
+                .err(*ngFor="let err of requiredParamsForm.controls[app.name + '@' + param.name].errors | asArray") {{ err.value.message }}
+
+            .field(*ngSwitchCase="'select'")
+              label(title="{{param.desc}}" id="{{app.name + '@' + param.name}}") {{ param.name }}
+                .param-type {{ param.type }}
+              select(id="{{app.name + '@' + param.name}}", formControlName="{{app.name + '@' + param.name}}")
+                option(*ngFor="let opt of param.values")
+              .errors(*ngIf="requiredParamsForm.controls[app.name + '@' + param.name].errors && requiredParamsForm.controls[app.name + '@' + param.name].touched")
+                .err(*ngFor="let err of requiredParamsForm.controls[app.name + '@' + param.name].errors | asArray") {{ err.value.message }}
+
+            .field(*ngSwitchCase="'integer'")
+              label(title="{{param.desc}}" id="{{app.name + '@' + param.name}}") {{ param.name }}
+                .param-type {{ param.type }}
+              input(type="number" step="1", id="{{app.name + '@' + param.name}}", formControlName="{{app.name + '@' + param.name}}")
+              .errors(*ngIf="requiredParamsForm.controls[app.name + '@' + param.name].errors && requiredParamsForm.controls[app.name + '@' + param.name].touched")
+                .err(*ngFor="let err of requiredParamsForm.controls[app.name + '@' + param.name].errors | asArray") {{ err.value.message }}
+
+            .field(*ngSwitchCase="'text'")
+              label(title="{{param.desc}}" id="{{app.name + '@' + param.name}}") {{ param.name }}
+                .param-type {{ param.type }}
+              input(type="text", id="{{app.name + '@' + param.name}}", formControlName="{{app.name + '@' + param.name}}")
+              .errors(*ngIf="requiredParamsForm.controls[app.name + '@' + param.name].errors && requiredParamsForm.controls[app.name + '@' + param.name].touched")
+                .err(*ngFor="let err of requiredParamsForm.controls[app.name + '@' + param.name].errors | asArray") {{ err.value.message }}
+
+            .field(*ngSwitchCase="'secret'")
+              label(title="{{param.desc}}" id="{{app.name + '@' + param.name}}") {{ param.name }}
+                .param-type {{ param.type }}
+              input(type="password", id="{{app.name + '@' + param.name}}", formControlName="{{app.name + '@' + param.name}}")
+              .errors(*ngIf="requiredParamsForm.controls[app.name + '@' + param.name].errors && requiredParamsForm.controls[app.name + '@' + param.name].touched")
+                .err(*ngFor="let err of requiredParamsForm.controls[app.name + '@' + param.name].errors | asArray") {{ err.value.message }}
+
+            .field(*ngSwitchCase="'float'")
+              label(title="{{param.desc}}" id="{{app.name + '@' + param.name}}") {{ param.name }}
+                .param-type {{ param.type }}
+              input(type="number" step="any", id="{{app.name + '@' + param.name}}", formControlName="{{app.name + '@' + param.name}}")
+              .errors(*ngIf="requiredParamsForm.controls[app.name + '@' + param.name].errors && requiredParamsForm.controls[app.name + '@' + param.name].touched")
+                .err(*ngFor="let err of requiredParamsForm.controls[app.name + '@' + param.name].errors | asArray") {{ err.value.message }}
+
+    .validate
+      .button((click)="submit()") VALIDATE

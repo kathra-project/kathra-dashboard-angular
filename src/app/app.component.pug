@@ -1,0 +1,17 @@
+.loader-wrapper(*ngIf="keycloakReady && !applicationReady")
+	.icon-wrapper(style="overflow: visible; height: 55px; margin-bottom: 10px;")
+		.icon
+	.text {{ loadingText }}
+ng-container.kathra-root(*ngIf="keycloakReady && applicationReady")
+	kathra-navbar
+
+	.error(*ngIf="applicationError", style="text-align: center; margin-top: 80px; color: whitesmoke;")
+		div Internal Server Error :(
+		i (Please verify you have a Gitlab account and your login is correct)
+	.sgm-main-layout(*ngIf="!applicationError")
+		router-outlet
+	simple-notifications([options]="notifsOptions")
+	.version-block(*ngIf="kathraVersion", title='{{kathraVersion.version + "-" + kathraVersion.cycle.toUpperCase()}}')
+		.ribbon.snapshot {{ kathraVersion.cycle.toUpperCase() }}
+		.version-dimmer
+		.version {{ kathraVersion.version }}

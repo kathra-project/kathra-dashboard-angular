@@ -1,0 +1,18 @@
+form([formGroup]="basicInfoForm")
+  .col
+    label(for="envName") Step 1 - Name your Environment
+    input(type="text" formControlName="envName" id="envName")
+    .error(*ngIf="!basicInfoForm.controls.envName.valid") The platform name must only contain small-caps alphanumeric characters (a-z,0-9) and dashes (-)
+    
+  .col
+    label(for="envTeam") Step 2 - Select a Team for this Environment
+    select(formControlName="envTeam" id="envTeam")
+      option(selected value="") Team
+      option(*ngFor="let group of user.projectGroups", [value]="group.id") {{ group.name }}
+
+  .col
+    label(for="envTags") Step 3 - Add tags to describe the Environment
+    kathra-multival-input((updateValue)="updateTags($event)")
+
+.controls
+  a.next.button((click)="validateInfos()", [ngClass]="{disabled: !basicInfoForm.controls.envName.valid}") Next

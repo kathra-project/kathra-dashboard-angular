@@ -1,0 +1,319 @@
+:host {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 0;
+  color: #393939;
+
+  & > .content {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    overflow-y: auto;
+
+    .tools {
+      width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      display: none;
+    }
+
+    .title {
+      font-size: 2.3em;
+      font-weight: 100;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
+      margin: 30px auto;
+      color: #9FBCBB;
+    }
+
+    .home {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 50px;
+
+      @media screen and (max-width: 1280px) {
+        left: 10px;
+      }
+      .text {
+        width: 270px;
+        text-align: center;
+      }
+
+      .previous {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px;
+        color: #393939;
+        user-select: none;
+        cursor: pointer;
+
+        i.icon {
+          margin-right: 10px;
+          height: 18px;
+        }
+      }
+    }
+
+    .columns {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      color: #393939;
+
+      .version {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      & > * {
+        flex: 1;
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 0 20px;
+      }
+
+      .apis {
+        max-width: 70%;
+        min-height: 0;
+
+        & > * {
+          margin: 0 5vw 10px;
+        }
+
+        .api-title {
+          font-size: 1.5em;
+          width: -webkit-fit-content;
+          width: -moz-fit-content;
+          width: fit-content;
+          margin: 15px auto;
+
+          .version {
+            font-weight: bolder;
+          }
+          .latest {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            font-weight: 100;
+            font-style: italic;
+          }
+        }
+
+        .api-sign {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          align-items: center;
+          font-weight: bolder;
+          margin-bottom: 2px;
+        }
+
+        .api-details {
+          flex: 1;
+          display: flex;
+          overflow-y: auto;
+          border: 1px solid #393939;
+          border-radius: 3px;
+
+          .yaml {
+            flex: 1;
+
+            pre {
+              margin: 0;
+              padding: 10px;
+            }
+          }
+        }
+
+        .update-api.button {
+          padding: 1vh;
+          width: 21%;
+          align-self: end;
+          background-color: #9FBCBB;
+          color: whitesmoke;
+          border: 1px solid lightgrey;
+          border-radius: 5px;
+          text-align: center;
+          font-size: 1.2em;
+          cursor: pointer;
+          user-select: none;
+    
+          &:hover {
+            background-color:#80a7a5;
+          }
+        }
+
+        .new-api.button {
+          padding: 1vh;
+          width: 60%;
+          align-self: center;
+          background-color: #9FBCBB;
+          color: whitesmoke;
+          border: 1px solid lightgrey;
+          border-radius: 5px;
+          text-align: center;
+          font-size: 1.2em;
+          cursor: pointer;
+          user-select: none;
+    
+          &:hover {
+            background-color:#80a7a5;
+          }
+        }
+
+        .other-versions {
+          max-height: 10vh;
+          overflow: auto;
+
+          .api-version {
+            padding: 2px 0;
+            margin-bottom: 8px;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            border-radius: 3px;
+            font-size: .9em;
+            cursor: pointer;
+            border: 1px solid lightgrey;
+
+            & > * {
+              padding: 0 10px 0 20px;
+            }
+
+            .version {
+              font-weight: bolder;
+              font-size: 1.2em;
+            }
+
+            .info.icon {
+              margin-left: 10px;
+              color:#2f48a0;
+            }
+
+            .left-aligned {
+              width: 300px;
+            }
+          }
+        }
+      }
+
+      .loader{
+        width: 10%;
+        margin: auto;
+      }
+      .hidden{
+        display: none;
+      }
+
+      .implems {
+        max-width: 30%;
+        min-height: 0;
+
+        .impl-title {
+          font-size: 1.5em;
+          width: -webkit-fit-content;
+          width: -moz-fit-content;
+          width: fit-content;
+          margin: 50px auto 15px auto;
+        }
+
+        .new-impl.button {
+          padding: 1vh;
+          margin: 15px auto 10px auto;
+          align-self: center;
+          background-color: #80a7a5;
+          color: whitesmoke;
+          border: 1px solid lightgrey;
+          border-radius: 5px;
+          text-align: center;
+          font-size: 1.2em;
+          cursor: pointer;
+          user-select: none;
+    
+          &:hover {
+            background-color:#9FBCBB;
+          }
+        }
+
+        .implems-list {
+          margin-top: 10px;
+          overflow-y: auto;
+          
+          .subtitle  {
+            margin-bottom: 10px;
+            font-weight: bolder;
+          }
+
+          .selected-version {
+            margin-bottom: 30px;
+          }
+          .other-versions {
+            opacity: .6;
+          }
+  
+          .implem {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            font-size: .9em;
+            margin: 8px 0;
+            padding: 0 10px;
+  
+            .language.tag {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 16px;
+              height: 16px;
+              border-radius: 3px;
+              margin-right: 5px;
+  
+              &.python {
+                background-color: #f8c63d;
+              }
+              &.java {
+                background-color: #5382a1;
+              }
+  
+              img {
+                height: 14px;
+                width: auto;
+                filter: invert(100%);
+              }
+            }
+  
+            .infos {
+              display: flex;
+              flex: 1;
+              border: 1px solid lightgrey;
+              border-radius: 3px;
+              padding: 2px 10px;
+              cursor: pointer;
+              .name {
+                flex: 1;
+              }
+    
+              .version {
+                font-weight: bolder;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

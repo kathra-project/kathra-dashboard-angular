@@ -1,0 +1,32 @@
+.navbar-content
+  a.logo([routerLink]="['']")
+    //img(src="assets/img/icons/Home B.svg")
+    i.small.home.icon
+  .menus
+    .search.disabled
+      .sgm2.icon.input
+        input(type="text" disabled placeholder="Search resources...")
+        .search-reset.icon x
+    
+    .help.disabled
+      //img(src="assets/img/icons/Help B.svg")
+      i.small.question.circle.outline.icon
+
+    .user((click)="toggleNotifsList($event)")
+      i.bubble([style.background]="colorPick.colorFromString(nameAcronym)")
+        .text {{ nameAcronym }}
+        .notifs.signal(*ngIf="notifs.rawNotifs.length > 0")
+      
+      .notifs-list
+        .list-content
+          .empty-list(*ngIf="notifs.rawNotifs.length == 0")
+            .text You have no unread notification for now :D
+          .notif(*ngFor="let notif of notifs.rawNotifs", (click)="popRawNotif(notif.id)")
+            .text
+              .title {{ notif.title }}
+              .content {{ notif.content }}
+            .kind
+              i.green.check.icon(*ngIf="notif.kind == 'success'")
+              i.red.exlamation.circle.icon(*ngIf="notif.kind == 'error'")
+              i.blue.info.circle.icon(*ngIf="notif.kind == 'info'")
+        .list-background

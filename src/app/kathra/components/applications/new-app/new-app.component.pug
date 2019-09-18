@@ -1,0 +1,21 @@
+.content
+  .title NEW {{kind}}
+  a.cancel.control([routerLink]="['/kathra', 'applications']" fragment="components")
+    .icon X
+    .text Cancel
+  
+  .breadcrumb
+    .graphic
+      .component([ngClass]="{'done': newApp.creationStep > 1}") COMPONENT
+      .link
+      .api([ngClass]="{'done': newApp.creationStep > 2}") API
+      .link
+      .implem([ngClass]="{'done': newApp.creationStep > 3}") IMPLEMENTATION
+    .infos
+      .component(title="{{newApp.component?.description}}", [ngClass]="{'done': newApp.creationStep > 1}") {{newApp.component?.name}}
+      .link
+      .api([ngClass]="{'done': newApp.creationStep > 2}") {{newApp.api?.version}}
+      .link
+      .implem([ngClass]="{'done': newApp.creationStep > 3}") {{newApp.implem?.name}}
+  
+  router-outlet

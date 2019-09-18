@@ -1,0 +1,117 @@
+:host {
+  color: #212121;
+  border-radius: 4px;
+  margin: 10px;
+  display: inline-flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  box-shadow: 0px 1px 10px -2px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+  
+  &.compact {
+    width: 80%;
+
+    .header {
+      .team {
+        border-bottom-left-radius: 4px;
+      }
+      .content {
+        border-bottom-right-radius: 4px;
+      }
+    }
+  }
+
+  .app {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 320px;
+    max-width: 100%;
+  }
+
+  .header {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+
+    .team.color {
+      background: white;
+      border-top-left-radius: 4px;
+      width: 8px;
+    }
+
+    .content {
+      display: inline-flex;
+      background: white;
+      align-items: center;
+      border-top-right-radius: 4px;
+      flex: 1;
+      height: 50px;
+      position: relative;
+
+      &>* {
+        position: absolute;
+      }
+
+      .image {
+        margin: 0 2px;
+        padding: 2px;
+        height: 38px;
+        width: 45px;
+
+        img {
+          height: 100%;
+          max-width: 50px;
+        }
+      }
+      
+      .name {
+        flex: 1;
+        max-width: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+
+        .text {
+          max-width: 200px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+
+      .controls {
+        right: 2px;
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: 20px;
+    font-size: .8em;
+    color: white;
+
+    & > * {
+      padding: 2px 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cat {
+      text-transform: uppercase;
+      width: 110px;
+      background: #5a5a5a;
+      text-align: center;
+      border-bottom-left-radius: 4px;          
+    }
+
+    .infos {
+      width: 0px;
+      flex: 1;
+      background: darkgrey;
+      border-bottom-right-radius: 4px;
+    }
+  }
+}

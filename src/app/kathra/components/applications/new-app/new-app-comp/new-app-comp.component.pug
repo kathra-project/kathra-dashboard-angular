@@ -1,0 +1,43 @@
+.form([formGroup]="componentForm")
+  .row
+    .field
+      label(for="compName") Step 1 - Name of the Component
+      input(type="text" formControlName="name" id="compName")
+
+    .field
+      label(for="compTeam") Step 2 - Selected team for the Component
+      select(formControlName="team" id="compTeam")
+        option(selected value="") Team
+        option(*ngFor="let group of user.gitlabGroups", [value]="group.path") {{ group.name }}
+  
+  .row
+    .field.desc
+      label(for="compDesc") Step 3 - Description of the component
+      input(type="text" formControlName="desc" id="compDesc")
+
+  .row
+    .response
+      .component-status(*ngIf="newApp?.component?.status")
+        .strong.label Status:
+        .status.green.loader(*ngIf="this.kathraStatus.isPending(newApp?.component)")
+        i.status.green.checkmark.icon(*ngIf="this.kathraStatus.isReady(newApp?.component)")
+        i.status.red.remove.icon(*ngIf="this.kathraStatus.isError(newApp?.component)")
+        .strong.value {{ newApp.component.status }}
+
+  .row.another
+    .button.another(*ngIf="isValidated", [routerLink]="['new', 'component']")
+      i.add.icon
+      span.text CREATE ANOTHER
+
+.controls
+  .button.done.hidden([routerLink]="['/kathra', 'applications']")
+    i.left.chevron.icon
+    span.text FINISH
+
+  .button.validate((click)="validate()", [ngClass]="{'disabled': !this.componentForm.valid && !isValidated }")
+    i.big.circle.outline.icon
+    span.text VALIDATE
+
+  .button.tbc((click)="goNext()", [ngClass]="{'disabled': !isComponentReady()}")
+    span.text ADD API
+    i.right.chevron.icon

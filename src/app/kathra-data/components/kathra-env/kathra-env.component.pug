@@ -1,0 +1,10 @@
+.header([style.backgroundColor]="color", (click)='onHeaderClick()')
+  .name {{ env.name }}
+
+.content
+  .tags
+    .tag(*ngFor="let tag of nonEmptyTags", [style.backgroundColor]="color") {{ tag }}
+
+  .status
+    i.huge.orange.spinner.icon(*ngIf="env.status == 'DEPLOYING'")
+    i.huge.green.check.circle.outline.icon(*ngIf="env.status == 'AVAILABLE'")

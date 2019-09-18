@@ -1,0 +1,28 @@
+.header
+  .left.control <
+  .title CATALOGUE
+  .right.control >
+.content
+  .tabs
+    .tab.search.selected SEARCH
+    .tab-splitter
+    .tab.pinned PINNED
+  .tabs-content
+    .tab-content.search.selected
+      .sgm2.icon.input
+        input(type="text" placeholder="Filter Applications..." , [(ngModel)]="filterValue")
+        i.search.icon
+      .select-all(title="Select all")
+        .wrapper(style="position: relative; z-index: 2")
+          .selector.all-apps
+            input(type="checkbox" id="expl_all_apps_check", (change)="updateSelection($event, 'ALL')")
+            label(for="expl_all_apps_check")
+      .apps
+        .app(*ngFor="let app of filteredApps")
+          kathra-app([appId]="app.id", [display]="'compact'")
+          .selector
+            input(type="checkbox" id="{{'expl_' + app.id + '_check'}}", (change)="updateSelection($event, app.id)")
+            label(for="{{'expl_' + app.id + '_check'}}")
+    .tab-content.pinned
+
+  .button.add((click)="addSelectedAppsToEnv()") ADD TO ENVIRONMENT

@@ -1,0 +1,37 @@
+.content.dimmable
+  .title {{implem?.name}} 
+    span ( API v{{apiVersion?.version}} )
+
+  .home
+    a.previous([routerLink]="['/kathra', 'applications']" fragment="implementations")
+      i.left.chevron.icon
+      span Implementation list
+
+  .columns
+    .implem-infos
+      .createdBy
+        p {{implem?.createdBy}} - {{ implem?.metadata["artifact-groupId"] }}
+      .createdAt
+        p {{implem?.updatedAt * 1000 | date: 'dd/MM/yyyy' }}
+      .description
+        p {{implem?.description}}
+      .repository
+        a( href="{{ implem?.sourceRepository?.webUrl }}" ) {{ implem?.sourceRepository?.sshUrl }}
+      .url
+        .status([ngClass]="this.status")
+        .content
+          a.url([title]="this.getUrl()", target="_blank", [href]="this.getUrl()") {{ this.getUrl() }}
+
+      .widgets(*ngIf="this.implem != null")
+        <kathra-pipeline-widget [implementation]="implem" [branches]="branches" [currentBranch]="currentBranch"></kathra-pipeline-widget>
+        <kathra-source-repository-widget [implementation]="implem" [branches]="branches" [currentBranch]="currentBranch"></kathra-source-repository-widget>
+
+    .filters
+      a.component-details.button([routerLink]="['/kathra', 'applications', 'component', implem?.component.id]")
+        | Component {{ implem?.component?.name }}
+      .branches
+        .branch(*ngFor="let branch of this.branches")
+          a.button( [style.background]="colorPick.colorFromString(branch)", (click)="updateCurrentBranch(branch)")
+            | {{ branch }}
+  i.ui.active.inverted.dimmer
+      i.ui.loader

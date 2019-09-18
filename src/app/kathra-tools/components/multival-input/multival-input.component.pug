@@ -1,0 +1,8 @@
+.sgm2.input
+  input((keyup)="processKeydown($event)", placeholder="Enter tags here...")
+
+.tags
+  .tag.cat(*ngFor="let tag of tags")
+      span.content {{ tag }}
+      span.del 
+        i.white.remove.icon((click)="deleteTag(tag)")

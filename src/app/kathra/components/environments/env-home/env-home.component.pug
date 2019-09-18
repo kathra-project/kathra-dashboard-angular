@@ -1,0 +1,122 @@
+.title ALL ENVIRONMENTS
+.content
+  .environments
+    a.button.create.new.env([routerLink]="['new','information']")
+      i.plus.icon
+      | Create a new Environment
+
+    .search
+      .sgm2.icon.input
+        input([(ngModel)]="filter" placeholder="Search & filter Environments")
+        i.search.icon
+    
+    .tabs
+      .tabs.headers
+        .tab.header.active ACTIVE
+        .tab.splitter
+        .tab.header SAVED
+
+      .sorters
+        .group.sort
+          .wrapper((click)="updateSort('owner')", [ngClass]="{'active': this.sort.prop == 'owner'}")
+            i.sort.content.descending.icon
+            | Group
+        .name.sort
+          .wrapper((click)="updateSort('name')", [ngClass]="{'active': this.sort.prop == 'name'}")
+            i.sort.content.descending.icon
+            | Name
+        .status.sort
+          .wrapper((click)="updateSort('status')", [ngClass]="{'active': this.sort.prop == 'status'}")
+            i.sort.content.descending.icon
+            | Status
+        .select-all(title="Select all")
+          .wrapper(style="position: relative; z-index: 2")
+            .selector.all-envs
+              input(type="checkbox" id="all_envs_check", (change)="updateSelection($event, 'ALL')")
+              label(for="all_envs_check")
+
+      .controls
+        .ctrl.box
+          .delete.env((click)="deleteEnvs()", [ngClass]="{'active': this.selectedEnvs.length > 0}")
+            i.huge.remove.icon
+            .text Delete Environment
+          .save.env((click)="saveEnvs()", [ngClass]="{'active': this.selectedEnvs.length > 0}")
+            i.huge.download.icon
+            .text Save Environment
+
+      .tabs.content
+        .instanciating.envs([ngStyle]="{order: sort.prop == 'status' && sort.asc == false ? 2 : 0}", *ngIf="instanciatingEnvironments.length > 0")
+          .env(*ngFor="let env of instanciatingEnvironments")
+            kathra-env([envId]="env.name", (headerClick)="loadDetails(env.name)")
+            .selector
+              input(type="checkbox" id="{{env.name + '_check'}}", (change)="updateSelection($event, env.name)")
+              label(for="{{env.name + '_check'}}")
+
+        .running.envs(style="order: 1", *ngIf="runningEnvironments.length > 0")
+          .env(*ngFor="let env of runningEnvironments")
+            kathra-env([envId]="env.name", (headerClick)="loadDetails(env.name)")
+            .selector
+              input(type="checkbox" id="{{env.name + '_check'}}", (change)="updateSelection($event, env.name)")
+              label(for="{{env.name + '_check'}}")
+
+        .crashed.envs(*ngIf="crashedEnvironments.length > 0")
+          .env(*ngFor="let env of crashedEnvironments")
+            kathra-env([envId]="env.name", (headerClick)="loadDetails(env.name)")
+            .selector
+              input(type="checkbox" id="{{env.name + '_check'}}", (change)="updateSelection($event, env.name)")
+              label(for="{{env.name + '_check'}}")
+
+kathra-modal(id="env-details")
+  .modal
+    .modal-body
+      .modal-closer((click)="modals.close('env-details')")
+        i.large.remove.icon
+      //.previous.env.switcher
+        i.huge.angle.left.icon
+      //.next.env.switcher
+        i.huge.angle.right.icon
+
+      .modal-header
+        .title {{ focusedEnv?.name }}
+        .status
+          i.check.circle.icon
+      .build.version Build 1.0.4-SNAPSHOT
+
+      .tabs
+        .tabs.headers
+          .tab.header.active OVERVIEW
+          .tab.splitter
+          .tab.header SERVICES
+          .tab.splitter
+          .tab.header RESOURCES
+    
+        .tabs.content
+          .overview.tab.active
+            .services.list
+              .service(*ngFor="let svc of focusedEnv?.services")
+                .left-border
+                .content 
+                  .name {{ svc.name }}
+                  a.url([title]="svc.url", target="_blank", [href]="svc.url") {{ svc.url }}
+                .status([ngClass]="getClassForStatus(svc.status)")
+            .event.logs
+              table.ui.celled.table(*ngIf="focusedEnv?.events")
+                thead
+                  tr.center.aligned
+                    th Kind / Name
+                    th Message
+                    th Reason
+                    th Last Seen
+                tbody
+                  tr(*ngFor="let event of sortedEvents")
+                    td 
+                      div(style="font-weight: bold") {{ event.involvedObject.kind }}
+                      div {{ event.involvedObject.name }}
+                    td {{ event.message }}
+                    td 
+                      div(style="font-weight: bold") {{ event.reason }}
+                      div ({{ event.count }} times)
+                    td {{ convertTime(event.lastTimestamp) }} s
+              .no-event(*ngIf="!focusedEnv?.events")
+                | No event available for this environment...
+  .modal-background

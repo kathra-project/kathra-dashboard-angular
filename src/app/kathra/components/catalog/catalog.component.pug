@@ -1,0 +1,93 @@
+.filters.inline.form
+  form.other-filters([formGroup]="licence")
+    .source-filters
+      .label SOURCES
+      .radio.filter
+        label SystemX
+        .checkbox
+          input(type="checkbox" formControlName="irtsystemx" id="irtsystemx", (change)="refreshFilters()")
+          label(for="irtsystemx")
+      .radio.filter
+        label Open Source
+        .checkbox
+          input(type="checkbox" formControlName="opensource" id="opensource", (change)="refreshFilters()")
+          label(for="opensource")
+      .radio.filter
+        label Partners
+        .checkbox
+          input(type="checkbox" formControlName="partners" id="partners", (change)="refreshFilters()")
+          label(for="partners")
+
+    .flex-filler
+
+    .categories.list((click)="toggleList('categories')")
+      .title CATEGORIES
+      i.large.angle.down.icon
+      .categories.list.content
+        .by-char(*ngFor="let catChar of appsCategoriesByChar(true) | asArray")
+          .color.bubble([ngClass]="{small: catChar.value == null}")
+            .text {{ catChar.key }}
+          .category(*ngFor="let cat of catChar.value")
+            .name {{ cat }}
+
+    .teams.list.disabled
+      .title TEAMS
+      i.large.angle.down.icon
+      .teams.list.content
+        .by-char(*ngFor="let catChar of appsTeamsByChar(true) | asArray")
+          .color.bubble([ngClass]="{small: catChar.value == null}")
+            .text {{ catChar.key }}
+          .category(*ngFor="let cat of catChar.value")
+            .name {{ cat }}
+  
+  .multi-filter
+    kathra-filter([filters]="[{values:appsCategories(false), prefix: 'cat'}, {values:teams, prefix: 'team'}]", [placeholder]="'Search & filter the catalog...'", (onFilteringOptsRefresh)="updateFilters($event)")
+
+.catalog-content
+  .tabs
+    .tab.apps.selected APPLICATIONS
+    .splitter
+    .disabled.tab.bundles BUNDLES
+    .splitter
+    .disabled.tab.platforms PLATFORMS
+
+  .drawer.apps
+    .filtered.view.cats(*ngIf="displayMode == 'by-cat'")
+      .category-by-char(*ngFor="let catChar of appsCategoriesByChar() | asArray")
+        .color.bubble
+          .text {{ catChar.key }}
+        .category(*ngFor="let cat of catChar.value")
+            .title
+              .name {{ cat }}
+            .content
+              kathra-app(*ngFor="let app of catalogAppsByCat(cat)", [appId]="app.id", (click)="loadDetails(app.id)")
+  
+  .drawer.bundles(*ngIf="false")
+  .drawer.platforms(*ngIf="false")
+
+kathra-modal(id="app-details")
+  .modal
+    .modal-body
+      .modal-closer((click)="modals.close('app-details')")
+        i.large.remove.icon
+      .modal-header
+        .title {{ focusedApp?.name }}
+      .content
+        .infos
+          .col
+            img([src]="focusedApp?.iconUrl")
+            .buttons
+              a.website(target="_blank" href="{{focusedApp?.websiteUrl}}")
+                i.eye.icon
+                .text Website
+              a.disabled.doc
+                i.file.alternate.icon
+                .text Documentation
+              a.disabled.test
+                i.cogs.icon
+                .text Test
+          .col.desc
+            p {{ focusedApp?.description }}
+        .row 
+          
+  .modal-background

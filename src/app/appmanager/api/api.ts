@@ -1,0 +1,15 @@
+export * from './apiVersions.service';
+import { ApiVersionsService } from './apiVersions.service';
+export * from './components.service';
+import { ComponentsService } from './components.service';
+export * from './default.service';
+import { DefaultService } from './default.service';
+export * from './groups.service';
+import { GroupsService } from './groups.service';
+export * from './implementations.service';
+import { ImplementationsService } from './implementations.service';
+export * from './pipelines.service';
+import { PipelinesService } from './pipelines.service';
+export * from './repositories.service';
+import { RepositoriesService } from './repositories.service';
+export const APIS = [ApiVersionsService, ComponentsService, DefaultService, GroupsService, ImplementationsService, PipelinesService, RepositoriesService];

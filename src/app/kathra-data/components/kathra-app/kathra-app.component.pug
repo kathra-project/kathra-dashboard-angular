@@ -1,0 +1,16 @@
+.app
+  .header
+    .team.color([style.backgroundColor]="app.licence == 'opensource' ? white: getAppColor(app.licence, 'normal')")
+    .content
+      .image
+        img.logo([src]="app.iconUrl")
+      .name(title="{{app.name}}")
+        .text {{ app.name }}
+      .controls(*ngIf="display != 'compact'")
+        .favorite
+          i.fav.yellow.empty.star.icon
+        .select
+          i.grey.check.circle.outline.icon
+  .footer(*ngIf="display != 'compact'")
+    .cat([style.backgroundColor]="color.normal") {{ app.categories[0] }}
+    .infos([style.backgroundColor]="color.light") {{ app.teaser }}

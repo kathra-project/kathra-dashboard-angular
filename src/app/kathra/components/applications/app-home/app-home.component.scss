@@ -1,0 +1,290 @@
+:host {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 0;
+
+  & > .content {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: auto;
+
+    .tools {
+      width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      display: none;
+    }
+
+    .title {
+      font-size: 2.3em;
+      font-weight: 100;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
+      margin: 80px auto;
+    }
+
+    .app {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50px;
+      right: 50px;
+      @media screen and (max-width: 1280px) {
+        right: 10px;
+      }
+      .text {
+        width: 270px;
+        text-align: center;
+      }
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 200px;
+        margin: 20px;
+        padding: 8px 15px;
+        border-radius: 4px;
+        user-select: none;
+        cursor: pointer;
+
+        i.icon {
+          margin-right: 10px;
+        }
+      }
+
+      &.new {
+        .button {
+          background-color: whitesmoke;
+          color: #393939;
+        }
+      }
+      &.gitlab {
+        .button {
+          background-color: rgb(145, 140, 140);
+          color: whitesmoke;
+        }
+      }
+    }
+
+    .create.new.button {
+      width: 60%;
+      min-width: 380px;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid lightgrey;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 1.2em;
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        background-color:rgba(82,82,82,0.6)
+      }
+    }
+
+    .tabs:not(.content) {
+      position: relative;
+      display: flex;
+      width: 60%;
+      flex-flow: column nowrap;
+      align-items: center;
+
+      .tools {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .search {
+          .input {
+            margin: 0;
+          }
+        }
+
+        .filters {
+          display: flex;
+          z-index: 10;
+
+          .owner-filters {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 15px;
+            margin: 15px;
+            margin-left: 2px;
+        
+            .label {
+              margin-right: 30px;
+            }
+        
+            .radio.filter {
+              display: flex;
+
+              &:not(:last-child){
+                margin-right: 60px;  
+              }
+            }
+        
+            .radio:not(.filter) {
+              position: relative;
+              display: inline;
+              margin-left: 5px;
+        
+              label {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                cursor: pointer;
+                height: 18px;
+                width: 18px;
+                left: 0;
+                position: absolute;
+                top: 0;
+        
+                &:after {
+                  border: 1px solid #125115;
+                  background-color: #66bb6a;
+                  border-radius: 50%;
+                  content: "";
+                  height: 14px;
+                  width: 14px;
+                  left: 1px;
+                  top: 1px;
+                  opacity: 0;
+                  position: absolute;
+                }
+              }
+        
+              input {
+                visibility: hidden;
+              }
+        
+              input:checked + label {
+                background-color: #fff;
+                border-color: #fff;
+              }
+        
+              input:checked + label:after {
+                opacity: 1;
+              }
+            }
+          }
+        }
+      }
+
+      .tabs.headers {
+        flex-shrink: 0;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: fit-content;
+        user-select: none;
+
+        .tab {
+          display: inline-block;
+
+          &.header {
+            margin: 10px;
+            padding: 5px 0;
+            font-size: 1.2em;
+            color: #e0e0e0;
+            cursor: pointer;
+
+            &.active {
+              border-bottom: 1px solid lightgrey;
+              color: whitesmoke;
+            }
+          }
+
+          &.splitter {
+            height: 20px;
+            width: 1px;
+            border-left: 1px solid lightgrey;
+            margin: 0 10px;
+          }
+        }
+      }
+
+      .content:not(.icon) {
+        width: 100%;
+        position: relative;
+
+        .sorters {
+          font-size: 1.2em;
+          width: 100%;
+          user-select: none;
+          display: flex;
+
+          .flex-filler {
+            flex: 1;
+          }
+
+          .sort:not(.icon) {
+            display: inline-block;
+            margin: 20px;
+            
+            .wrapper {
+              cursor: pointer;
+              padding-bottom: 5px;
+              display: inline-block;
+              border-bottom: 1px solid transparent;
+
+              &.active {
+                border-color: lightgrey;
+              }
+            }
+
+            &.status {
+              float: right;
+            }
+          }
+        }
+
+        .loader{
+          width: 10%;
+          margin: auto;
+        }
+        .hidden{
+          display: none;
+        }
+
+        .components-list, .implementations-list {
+          width: 100%;
+          min-width: 550px;
+
+          .sorted {
+
+            .team-wrapper{
+
+              &:not(:first-child){
+                margin-top: 30px;
+              }
+              
+              .team-name {
+                text-align: center;
+                font-weight: bolder;
+                font-size: 1.2em;
+              }
+            }
+            
+          }
+        }
+      }
+    }
+
+    .or {
+      margin: 60px;
+    }
+  }
+}

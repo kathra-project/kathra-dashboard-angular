@@ -1,0 +1,73 @@
+.content
+  .title {{comp?.name}}
+
+  .home
+    a.previous([routerLink]="['/kathra','applications']" fragment="components")
+      i.left.chevron.icon
+      span Components list
+
+  .columns
+    .apis
+      .api-title
+        span
+          i.info.green.checkmark.icon(*ngIf="this.kathraStatus.isReady(latestVersion)")
+          i.info.red.remove.icon(*ngIf="this.kathraStatus.isError(latestVersion)")
+          i.info.orange.spinner.icon(*ngIf="this.kathraStatus.isCreating(latestVersion)")
+        span API 
+        span.version v{{currentVersion?.version}}
+        span.latest(*ngIf="currentVersion?.version == latestVersion?.version") (latest)
+
+      a.update-api.button(*ngIf="currentVersion?.version != null", (click)="updateCurrentApi()")
+        i.plus.icon
+        | Update API version v{{currentVersion?.version}}
+
+      .api-desc
+        p {{comp?.description}}.
+      .api-sign
+        .name {{ currentVersion?.createdBy }}
+        .date(*ngIf="currentVersion != null") {{ currentVersion?.createdAt * 1000 | date: 'dd/MM/yyyy' }}
+
+      .api-details
+        .yaml.hljs
+          pre
+            .loader
+              i.huge.grey.loading.spinner.icon
+            code.yaml(mwlHighlightJs [source]="yamlApi" language="yaml")
+        .readable
+      
+      a.new-api.button((click)="createNewApi()")
+        i.plus.icon
+        | New API version
+      
+      .other-versions
+        .api-version(*ngFor="let api of otherApiVersions", (click)='refreshAPIVersion(api.id)') 
+          .left-aligned
+            span {{comp?.name}} API 
+            span.version v{{api?.version}}
+          span.author {{ api?.createdBy }}
+          .right-aligned
+            span.date {{ api?.createdAt * 1000 | date: 'dd/MM/yyyy' }}
+            i.info.circle.icon
+
+    .implems
+      .impl-title Related Implementations
+      
+      a.new-impl.button((click)="createNewImplem()")
+        i.plus.icon
+        span New API 
+        span Implementation
+
+      .implems-list
+        .loader
+          i.big.grey.loading.spinner.icon
+        .implem(*ngFor="let implementation of this.implementations")
+          .language.tag.java(*ngIf="implementation?.language == 'JAVA'" title="java")
+            img(src="/assets/img/icons/java.png")
+          .language.tag.python(*ngIf="implementation?.language == 'PYTHON'" title="python")
+            img(src="/assets/img/icons/python.png")
+          .infos([routerLink]="[ 'implementation', implementation?.id ]")
+            i.info.green.checkmark.icon(*ngIf="this.kathraStatus.isReady(implementation)")
+            i.info.red.remove.icon(*ngIf="this.kathraStatus.isError(implementation)")
+            i.info.orange.spinner.icon(*ngIf="this.kathraStatus.isCreating(implementation)")
+            .name {{implementation?.name}}
+            .version(*ngIf="implementation?.versions.length > 0") {{ implementation?.versions[0]?.version }}

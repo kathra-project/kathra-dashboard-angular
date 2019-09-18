@@ -1,0 +1,9 @@
+.builds-table{
+  width: 100%;
+
+  .ui.special.loader {
+    position: absolute;
+    left: -20px;
+    transform: translate(-100%, -50%);
+  }
+}

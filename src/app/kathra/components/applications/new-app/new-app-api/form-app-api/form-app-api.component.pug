@@ -1,0 +1,74 @@
+.form([formGroup]="apiForm")
+  .row
+    .field.fileselect
+      label(for="apiFile") Step 1 - Upload your specification file
+      input(style="display:none" type="file" id="apiFile" name="apiFile", (change)="processFile($event)")
+      button((click)="delegateEvent($event)")
+        .content Browse
+        i.large.upload.icon
+      
+      .response(*ngIf="apiFileParsed")
+        .format
+          .strong.label File Format:
+          .status
+            i.green.checkmark.icon(*ngIf="apiFileParsed?.swagger")
+            i.red.remove.icon(*ngIf="!apiFileParsed?.swagger")
+          .value {{ apiFileParsed?.swagger }}
+        .keys-list
+          .strong.label Keys:
+          .keys
+            .service-name
+              .label Service Name:
+              .status
+                i.green.checkmark.icon(*ngIf="apiFileParsed?.info?.title")
+                i.red.remove.icon(*ngIf="!apiFileParsed?.info?.title")
+              .value {{ apiFileParsed?.info?.title }}
+            .group-id
+              .label Group ID:
+              .status
+                i.green.checkmark.icon(*ngIf="apiFileParsed?.groupId")
+                i.red.remove.icon(*ngIf="!apiFileParsed?.groupId")
+              .value {{ apiFileParsed?.groupId }}
+            .version
+              .label Version:
+              .status
+                i.green.checkmark.icon(*ngIf="apiFileParsed?.info?.version")
+                i.red.remove.icon(*ngIf="!apiFileParsed?.info?.version")
+              .value {{ apiFileParsed?.info?.version }}
+        .target
+          .strong.label Target:
+          .keys
+            .operations
+              .label Operations:
+              .status
+                i.green.checkmark.icon(*ngIf="apiFileParsed?.paths")
+                i.red.remove.icon(*ngIf="!apiFileParsed?.paths")
+              .value ({{ apiFileParsed.operations }})
+            .model
+              .label Model:
+              .status
+                i.green.checkmark.icon(*ngIf="apiFileParsed?.definitions")
+                i.red.remove.icon(*ngIf="!apiFileParsed?.definitions")
+              .value ({{ apiFileParsed.models }})
+        .target(*ngIf="newApp?.api?.status")
+          .strong.label Validating:
+          .keys
+            .api-status
+              .label Status :
+              .status.green.loader(*ngIf="this.kathraStatus.isCreating(newApp?.api)")
+              i.status.green.checkmark.icon(*ngIf="this.kathraStatus.isReady(newApp?.api)")
+              i.status.red.remove.icon(*ngIf="this.kathraStatus.isError(newApp?.api)")
+              .strong.value {{ newApp.api.status }}
+              .label This operations may take a few minutes.
+.controls
+  .button.done.hidden([routerLink]="['/kathra', 'applications']")
+    i.left.chevron.icon
+    span.text FINISH
+
+  .button.validate((click)="validate()", [ngClass]="{'hidden': !isApiFileValid, 'disabled': isValidated}")
+    i.big.circle.outline.icon
+    span.text VALIDATE
+
+  .button.tbc((click)="goNext()", [ngClass]="{'disabled': !isApiVersionReady()}")
+    span.text ADD IMPLEMENTATION
+    i.right.chevron.icon

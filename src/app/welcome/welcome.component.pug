@@ -1,0 +1,43 @@
+.dashboard
+  .widget.applications
+    a.label([routerLink]="['/kathra/applications']" fragment="components")
+      .text APPLICATIONS
+    .description
+      | Créez et gérez vos développements projet à l'aide de la plateforme d'intégration continue et des services factory de Kathra !
+    //.featured.apps.list
+      .title
+        i.empty.heart.icon
+        | {{ 'recommandé' | uppercase }}
+      kathra-app(*ngFor="let a of favoriteApps", [appId]="a.id", [display]="'compact'")
+
+  .widget.environments
+    a.label([routerLink]="['/kathra/environments']")
+      .text ENVIRONMENTS
+    .description
+      | Créez et gérez vos environnements de développement, test et pré-production.
+      | Composez-les à la carte depuis vos Applications et le Catalogue et créez l'environnement qui vous correspond !
+    //.featured.envs.list
+      .title
+        i.empty.heart.icon
+        | {{ 'recommandé' | uppercase }}
+      kathra-app(*ngFor="let a of favoriteApps", [appId]="a.id", [display]="'compact'")
+
+  .widget.catalog
+    a.label([routerLink]="['/kathra/catalog']")
+      .text CATALOGUE
+    .featured.catalog.apps.list
+      .title
+        i.empty.heart.icon
+        | {{ 'recommandé' | uppercase }}
+      kathra-app(*ngFor="let a of favoriteApps", [appId]="a.id", [display]="'compact'")
+
+  .widget.data
+    a.label([routerLink]="['/kathra/datasources']")
+      .text DATA
+    .description
+      | Découvrez, créez et sélectionnez les sources de données qui alimentent vos applications !
+    //.featured.datasrcs.list
+      .title
+          i.empty.heart.icon
+          | {{ 'recommandé' | uppercase }}
+      kathra-app(*ngFor="let a of favoriteApps", [appId]="a.id", [display]="'compact'")

@@ -1,0 +1,10 @@
+.header([routerLink]="['component', implem.component.id, 'implementation', implem.id]")
+  .color-strip([style.backgroundColor]="color")
+  .name {{ implem.name }}
+
+.content
+  .description {{ implem.description }}
+  .tags
+    .tag(*ngFor="let tag of nonEmptyTags", [style.backgroundColor]="tagColor") {{ tag }}
+  .status
+  .date {{ implem.createdAt * 1000 | date: 'dd/MM/yyyy' }}

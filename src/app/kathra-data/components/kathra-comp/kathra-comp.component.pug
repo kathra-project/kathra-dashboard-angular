@@ -1,0 +1,18 @@
+
+.header(*ngIf="comp.versions?.length > 0", [routerLink]="['component', comp.id]", title="{{ comp.name }}")
+  .color-strip([style.backgroundColor]="color")
+  .name {{ comp.name }}
+.header(*ngIf="comp.versions?.length == 0", title="{{ comp.name }}")
+  .color-strip([style.backgroundColor]="color")
+  .name {{ comp.name }}
+
+.content
+  .description {{ comp.description }}
+  a.related-apis([routerLink]="['component', comp.id]", *ngIf="comp.versions?.length>0")
+    .last-version v{{ comp.versions[0].version }}
+    .number(*ngIf="comp.versions?.length>1") (1 of {{ comp.versions?.length }})
+  .new-api(*ngIf="!comp.versions || comp.versions.length==0", (click)="createNewApi(comp)")
+    .add-new.button
+      i.left.aligned.small.add.icon
+      | Add
+  .date {{ comp.createdAt * 1000 | date: 'dd/MM/yyyy' }}

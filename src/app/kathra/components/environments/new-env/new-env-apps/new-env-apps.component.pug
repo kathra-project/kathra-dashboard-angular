@@ -1,0 +1,34 @@
+.text Step 4 - Select the Environment's resources
+.apps.selection
+  .col
+    label Add your own Applications
+    .applications.button.disabled APPLICATIONS
+    
+  .col
+    label Add Applications from the Catalogue
+    .catalogue.button((click)="toggleSidebar('sb_catalogue-explorer')") CATALOGUE
+
+  .col
+    label Add sources of Data
+    .datasources.button.disabled DATA SOURCES
+.apps.list
+  .app.controls
+    .ctrl.box
+      .delete.app([ngClass]="{active: selectedApps.length > 0}", (click)="deleteApps()")
+        i.huge.remove.icon
+        .text Delete Application
+    .ctrl.box
+      .select-all.app([ngClass]="{active: newEnv.env.services.length > 0}", title="Select all")
+        .wrapper(style="position: relative; z-index: 2")
+          .selector.all-apps
+            input(type="checkbox" id="all_apps_check", (change)="updateSelection($event, 'ALL')")
+            label(for="all_apps_check")
+        .text Select all
+  .list.content
+    .app(*ngFor="let app of newEnv.env.services")
+      kathra-app([appId]="app.id", [display]="'compact'")
+      .selector
+        input(type="checkbox" id="{{app.id + '_check'}}", (change)="updateSelection($event, app.id)")
+        label(for="{{app.id + '_check'}}")
+.controls
+  a.next.button((click)="validateApps()") Next
