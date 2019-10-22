@@ -24,11 +24,6 @@
         i.status.red.remove.icon(*ngIf="this.kathraStatus.isError(newApp?.component)")
         .strong.value {{ newApp.component.status }}
 
-  .row.another
-    .button.another(*ngIf="isValidated", [routerLink]="['new', 'component']")
-      i.add.icon
-      span.text CREATE ANOTHER
-
 .controls
   .button.done.hidden([routerLink]="['/kathra', 'applications']")
     i.left.chevron.icon

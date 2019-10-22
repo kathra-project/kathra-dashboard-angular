@@ -6,12 +6,11 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/package.json
-COPY node_modules /usr/src/app/node_modules
 
 # Install sources
 COPY server.js /usr/src/app/server.js
 COPY server /usr/src/app/server
-COPY dist/kathra-dashboard /usr/src/app/dist/kathra-dashboard
+RUN npm install
 
 # Expose endpoint
 EXPOSE 8080
