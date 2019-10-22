@@ -11,6 +11,7 @@ COPY package.json /usr/src/app/package.json
 COPY server.js /usr/src/app/server.js
 COPY server /usr/src/app/server
 RUN npm install
+RUN npm build
 
 # Expose endpoint
 EXPOSE 8080
