@@ -28,6 +28,10 @@
   .button.done.hidden([routerLink]="['/kathra', 'applications']")
     i.left.chevron.icon
     span.text FINISH
+    
+  .button.validate((click)="validate()", [ngClass]="{'disabled': !this.componentForm.valid && !isValidated }")
+    i.big.circle.outline.icon
+    span.text VALIDATE
 
   .button.tbc((click)="goNext()", [ngClass]="{'disabled': !isComponentReady()}")
     span.text ADD API

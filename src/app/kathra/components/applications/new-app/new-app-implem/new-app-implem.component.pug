@@ -33,6 +33,10 @@
       .label This operations may take a few minutes.
 
 .controls
+  .button.validate((click)="validate()", [ngClass]="{'disabled': !this.implemForm.valid}")
+    i.big.circle.outline.icon
+    span.text VALIDATE
+
   .button.done.hidden([routerLink]="['/kathra', 'applications']")
     i.left.chevron.icon
     span.text FINISH

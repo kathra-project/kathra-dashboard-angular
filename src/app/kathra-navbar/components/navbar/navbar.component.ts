@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
         } else if (this.user.info.username) {
             return this.user.info.username.toUpperCase();
         } else {
-            console.warn("unable to find user information", this.user.info);
+            //console.warn("unable to find user information", this.user.info);
             return "Unknown";
         }
     }
