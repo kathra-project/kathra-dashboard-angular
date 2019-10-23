@@ -27,7 +27,11 @@ div.builds-table
       tr
         th
         th(colspan='4')
-          .ui.right.floated.small.primary.labeled.icon.button([disabled]="_buildResquested", (click)="buildPipeline()" )
+          .ui.right.floated.small.primary.disabled.labeled.icon.button(*ngIf=="_buildResquested", (click)="buildPipeline()" )
+            //i.ui.special.loader
+            i.icon.cogs 
+            |  Scheduling
+          .ui.right.floated.small.primary.labeled.icon.button(*ngIf=="!_buildResquested", (click)="buildPipeline()" )
             //i.ui.special.loader
             i.icon.cogs 
             |  Rebuild
