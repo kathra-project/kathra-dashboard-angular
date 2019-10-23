@@ -26,7 +26,7 @@
     .field.response(*ngIf="newApp?.implem?.status")
       .implem-status
         .strong.label Status:
-        .status.green.loader(*ngIf="this.kathraStatus.isPengiting(newApp?.implem)")
+        .status.green.loader(*ngIf="this.kathraStatus.isPending(newApp?.implem)")
         i.status.green.checkmark.icon(*ngIf="this.kathraStatus.isReady(newApp?.implem)")
         i.status.red.remove.icon(*ngIf="this.kathraStatus.isError(newApp?.implem)")
         .strong.value {{ newApp.implem.status }}

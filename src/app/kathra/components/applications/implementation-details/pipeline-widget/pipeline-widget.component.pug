@@ -27,7 +27,7 @@ div.builds-table
       tr
         th
         th(colspan='4')
-          .ui.right.floated.small.primary.labeled.icon.button( (click)="buildPipeline()" )
+          .ui.right.floated.small.primary.labeled.icon.button([disabled]="buildResquested" (click)="buildPipeline()" )
             //i.ui.special.loader
             i.icon.cogs 
             |  Rebuild

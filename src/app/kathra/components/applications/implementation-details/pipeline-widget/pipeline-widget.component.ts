@@ -18,6 +18,7 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
   builds: Array<Build> = [];
   subscription: Subscription;
   private _currentBranch: string;
+  private _buildResquested: Build;
   @Input('currentBranch')
   set currentBranch(branch: string) {
     this._currentBranch = branch;
@@ -31,11 +32,19 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
     private config: AppConfig,
     private repositorySvc: RepositoriesService ) {}
 
-  buildPipeline(){
+  buildPipeline(event){
     this.buildsLoading();
-
+    
+    this._buildResquested = {
+      buildNumber: 'n/c',
+      creationDate: (Date.now()/1000),
+      status: Build.StatusEnum.Scheduled
+    };
     this.pipelineSvc.executePipeline(this.implementation.pipeline.id, this._currentBranch).subscribe(res => {
+      this._buildResquested = null;
     });
+    
+    this.builds.push(this._buildResquested);
   }
 
   updateBuilds(branch: string, subscription: Subscription) {
@@ -48,11 +57,10 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
       }else{
         this.builds = [];
       }
+      if (this._buildResquested) {
+        this.builds.push(this._buildResquested);
+      }
       this.buildsLoaded();
-
-      // if( subscription && this.allBuildsFinished()){
-      //   subscription.unsubscribe();
-      // }
     });
   }
 
