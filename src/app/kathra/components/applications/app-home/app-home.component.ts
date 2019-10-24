@@ -124,8 +124,7 @@ export class AppHomeComponent implements OnInit {
   }
 
   findComponent(implementation){
-    console.log(implementation)
-    return this.components.find(component => component.id == implementation.component.id )
+    return this.components.find(component => component.id == implementation.component.id);
   }
 
   ngOnInit() {

@@ -7,3 +7,8 @@
     transform: translate(-100%, -50%);
   }
 }
+
+.builds-table table tbody tr:hover {
+  background-color: rgba(0,0,50,.1);
+  cursor: pointer;
+}

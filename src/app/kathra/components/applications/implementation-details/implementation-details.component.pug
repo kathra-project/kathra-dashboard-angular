@@ -1,6 +1,5 @@
 .content.dimmable
   .title {{implem?.name}} 
-    span ( API v{{apiVersion?.version}} )
 
   .home
     a.previous([routerLink]="['/kathra', 'applications']" fragment="implementations")
@@ -28,10 +27,12 @@
 
     .filters
       a.component-details.button([routerLink]="['/kathra', 'applications', 'component', implem?.component.id]")
-        | Component {{ implem?.component?.name }}
+        | Component {{ implem?.component?.name }} - v{{apiVersion?.version}}
       .branches
         .branch(*ngFor="let branch of this.branches")
-          a.button( [style.background]="colorPick.colorFromString(branch)", (click)="updateCurrentBranch(branch)")
+          a.button(*ngIf="branch != currentBranch", (click)="updateCurrentBranch(branch)")
+            | {{ branch }}
+          a.active.button(*ngIf="branch == currentBranch", (click)="updateCurrentBranch(branch)")
             | {{ branch }}
   i.ui.active.inverted.dimmer
       i.ui.loader

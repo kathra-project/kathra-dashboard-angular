@@ -19,6 +19,14 @@ export class KathraElementStatusService {
     }
   }
 
+  isBuildScheduled(element): boolean {
+    if(element != null){
+      return element.status == 'SCHEDULED';
+    }else{
+      return false;
+    }
+  }
+
   isBuildFailed(element): boolean {
     if(element != null){
       return element.status == 'FAILED';

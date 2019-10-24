@@ -1,17 +1,31 @@
-FROM node:boron-alpine
+FROM node:8-alpine
 
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package.json /usr/src/app/package.json
-COPY node_modules /usr/src/app/node_modules
+# Copy sources
 
-# Install sources
+COPY package.json /usr/src/app/package.json
+COPY package-lock.json /usr/src/app/package-lock.json
+
+COPY src /usr/src/app/src
 COPY server.js /usr/src/app/server.js
 COPY server /usr/src/app/server
-COPY dist/kathra-dashboard /usr/src/app/dist/kathra-dashboard
+COPY angular.json /usr/src/app/angular.json
+COPY tsconfig.json /usr/src/app/tsconfig.json
+COPY tslint.json /usr/src/app/tslint.json
+COPY protractor.conf.js /usr/src/app/protractor.conf.js
+COPY karma.conf.js /usr/src/app/karma.conf.js
+COPY yarn.lock /usr/src/app/yarn.lock
+COPY pug-rule-insert.js /usr/src/app/pug-rule-insert.js
+
+# Install dependencies
+RUN npm i
+RUN npm run post-install
+
+# Build
+RUN npm run build
 
 # Expose endpoint
 EXPOSE 8080

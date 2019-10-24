@@ -18,6 +18,7 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
   builds: Array<Build> = [];
   subscription: Subscription;
   private _currentBranch: string;
+  private _buildResquested: Build;
   @Input('currentBranch')
   set currentBranch(branch: string) {
     this._currentBranch = branch;
@@ -31,11 +32,20 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
     private config: AppConfig,
     private repositorySvc: RepositoriesService ) {}
 
-  buildPipeline(){
+  buildPipeline(event){
     this.buildsLoading();
-
+    
+    this._buildResquested = {
+      buildNumber: 'n/c',
+      creationDate: Date.now(),
+      status: Build.StatusEnum.Scheduled,
+      duration: 0
+    };
     this.pipelineSvc.executePipeline(this.implementation.pipeline.id, this._currentBranch).subscribe(res => {
+      this.builds[0] = res;
+      this._buildResquested = null;
     });
+    this.builds.splice(0, 0, this._buildResquested);
   }
 
   updateBuilds(branch: string, subscription: Subscription) {
@@ -43,16 +53,15 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
     this.buildsLoading();
 
     this.pipelineSvc.getPipelineBuildsForBranch(this.implementation.pipeline.id, branch).subscribe(builds => {
+      
+      this.builds = [];
       if(builds != null && builds.length > 0){
-        this.builds = builds.slice(0, 4)
-      }else{
-        this.builds = [];
+        this.builds = builds.slice(0, 4);
+      }
+      if (this._buildResquested) {
+        this.builds.splice(0, 0, this._buildResquested);
       }
       this.buildsLoaded();
-
-      // if( subscription && this.allBuildsFinished()){
-      //   subscription.unsubscribe();
-      // }
     });
   }
 
@@ -86,7 +95,7 @@ export class PipelineWidgetComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit() {
     if(this.implementation != null){
-      this.updateBuilds("dev", null);
+      this.updateBuilds(this._currentBranch, null);
     }
   }
 

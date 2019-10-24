@@ -79,8 +79,7 @@ export class AppComponent implements OnInit{
       this.applicationReady = true;
       return Observable.throw(errMsg);
     }.bind(this))
-    .subscribe(function(groups){
-      console.debug("Groups:", groups);
+    .subscribe(function(groups) {
       this.user.gitlabGroups = groups.sort((a,b)=>{
         if(a.path.toLowerCase() < b.path.toLowerCase()) return -1;
         if(b.path.toLowerCase() < a.path.toLowerCase()) return 1;
