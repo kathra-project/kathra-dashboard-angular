@@ -65,6 +65,10 @@
     i.left.chevron.icon
     span.text FINISH
 
+  .button.validate((click)="validate()", [ngClass]="{'hidden': !isApiFileValid, 'disabled': isValidated}")
+    i.big.circle.outline.icon
+    span.text VALIDATE
+
   .button.tbc((click)="goNext()", [ngClass]="{'disabled': !isApiVersionReady()}")
     span.text ADD IMPLEMENTATION
     i.right.chevron.icon

@@ -49,7 +49,7 @@ export class SourceRepositoryWidgetComponent implements OnInit {
 
   ngOnInit() {
     if(this.implementation != null){
-      this.updateCommits("dev");
+      this.updateCommits(this._currentBranch);
     }
   }
 

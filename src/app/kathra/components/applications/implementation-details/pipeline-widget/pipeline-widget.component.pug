@@ -12,9 +12,9 @@ div.builds-table
         td.aligned
           i.info.green.checkmark.icon(*ngIf="this.kathraStatus.isBuildSucceed(this.build)")
           i.info.red.remove.icon(*ngIf="this.kathraStatus.isBuildFailed(this.build)")
-          i.info.orange.spinner.icon(*ngIf="this.kathraStatus.isBuildRunning(this.build)")
+          i.info.orange.spinner.icon(*ngIf="this.kathraStatus.isBuildRunning(this.build) || this.kathraStatus.isBuildScheduled(this.build)")
           | {{ build.buildNumber }}
-        td {{ build.status }}
+        td {{ build.status | uppercase }}
         td {{ this.getTimeInMinute(build.duration) }} min
         td.right.aligned.collapsing {{ build.creationDate | date: 'dd/MM/yyyy' }}
 
@@ -27,7 +27,11 @@ div.builds-table
       tr
         th
         th(colspan='4')
-          .ui.right.floated.small.primary.labeled.icon.button( (click)="buildPipeline()" )
+          .ui.right.floated.small.primary.disabled.labeled.icon.button(*ngIf="_buildResquested", (click)="buildPipeline()" )
+            //i.ui.special.loader
+            i.icon.cogs 
+            |  Scheduling
+          .ui.right.floated.small.primary.labeled.icon.button(*ngIf="!_buildResquested", (click)="buildPipeline()" )
             //i.ui.special.loader
             i.icon.cogs 
             |  Rebuild
