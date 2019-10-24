@@ -147,6 +147,11 @@
             cursor: pointer;
             user-select: none;
             margin-top: 15px;
+            background: rgba(124, 159, 96, 0.5) none repeat scroll 0% 0%;
+          }
+          .button:hover,
+          .active {
+            background: rgb(124, 159, 96) none repeat scroll 0% 0%;
           }
         }
       }
