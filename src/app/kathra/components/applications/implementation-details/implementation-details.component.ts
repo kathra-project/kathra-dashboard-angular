@@ -14,6 +14,7 @@ import { AppConfig } from '../../../../app.config';
 })
 export class ImplementationDetailsComponent implements OnInit {
 
+  defaultCurentBranchs: Array<String> = ['master', 'dev'];
   implem: Implementation;
   apiVersion: ApiVersion;
   branches: Array<String> = [];
@@ -68,16 +69,20 @@ export class ImplementationDetailsComponent implements OnInit {
   ngOnInit() {
 
     this.route.params.subscribe(params => {
-      this.currentBranch = "dev"
+      this.currentBranch = null;
 
-      this.implemSvc.getImplementationById(params['implemId']).subscribe(item => {
+      this.implemSvc.getImplementationById(params['implemId']).toPromise().then(item => {
         this.implem = item;
 
-        this.repositorySvc.getRepositoryBranches(this.implem.sourceRepository.id).subscribe(branchs => {
+        this.repositorySvc.getRepositoryBranches(this.implem.sourceRepository.id).toPromise().then(branchs => {
           this.branches = branchs
+          let defaultBranchFound = this.defaultCurentBranchs.find(defaultBranch => this.branches.includes(defaultBranch));
+          if (defaultBranchFound.length) {
+            this.currentBranch = defaultBranchFound;
+          }
         });
 
-        this.compSvc.getComponentById(this.implem.component.id).subscribe(component => {
+        this.compSvc.getComponentById(this.implem.component.id).toPromise().then(component => {
           this.implem.component = component
           this.apiVersion = this.getApiVersion()
           this.updateServiceStatus()

@@ -93,7 +93,6 @@ export class CatalogueExplorerComponent implements OnInit {
     this.sb.statusChange.subscribe((status)=>{
       if(status.sidebar == "sb_catalogue-explorer"){
         if(status.action == 'close' || status.action == 'open'){
-          console.debug(status);
           this.resetValues();
         }
       }
