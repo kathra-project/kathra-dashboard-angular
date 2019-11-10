@@ -1,8 +1,11 @@
+
+import {throwError as observableThrowError,  Observable, timer } from 'rxjs';
+
+import {catchError} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { GroupsService } from './appmanager';
 import { LoggerService } from './kathra-tools';
-import { Observable, timer } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { KathraUserService } from './kathra-user';
 import { KATHRA_VERSION } from './app.config';
@@ -66,8 +69,8 @@ export class AppComponent implements OnInit{
 
   initApp(){
     this.applicationReady = true;
-    this.groupMgr.getGroups("body")
-    .catch(function(error: Response | any){
+    this.groupMgr.getGroups("body").pipe(
+    catchError(function(error: Response | any){
       let errMsg: string;
       if (error instanceof Response) {
         errMsg = JSON.stringify(error);
@@ -77,8 +80,8 @@ export class AppComponent implements OnInit{
       }
       this.applicationError = true;
       this.applicationReady = true;
-      return Observable.throw(errMsg);
-    }.bind(this))
+      return observableThrowError(errMsg);
+    }.bind(this)))
     .subscribe(function(groups) {
       this.user.gitlabGroups = groups.sort((a,b)=>{
         if(a.path.toLowerCase() < b.path.toLowerCase()) return -1;
