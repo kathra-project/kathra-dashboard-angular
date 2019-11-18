@@ -8,7 +8,7 @@ import { NotAuthorizedInterceptor, NotLoggedInAuthGuard } from './kathra-tools';
 import { ApiModule as AppManagerModule, BASE_PATH as APPMGR_BASE_PATH } from './appmanager';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { HighlightJsModule, HIGHLIGHT_JS } from 'angular-highlight-js';
+import { HighlightJsModule, HIGHLIGHT_JS } from 'highlight.js';
 import * as hljs from 'highlight.js/lib/highlight';
 import * as hljs_yaml from 'highlight.js/lib/languages/yaml';
 

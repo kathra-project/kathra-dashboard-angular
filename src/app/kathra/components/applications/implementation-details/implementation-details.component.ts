@@ -51,7 +51,11 @@ export class ImplementationDetailsComponent implements OnInit {
     let swaggerPath = "/api/v1/swagger.json"
     let url = "";
     if(this.implem != null){
-      url = "https://" + this.implem.component.name + "." + this.getEnvName() + "-" + this.currentBranch + "." + domain + swaggerPath
+      let sufix=this.currentBranch;
+      if (this.currentBranch == "master") {
+        sufix = ""
+      }
+      url = "https://" + this.implem.name + "-" + this.getEnvName() + "-" + sufix + "-svc." + domain + swaggerPath
     }
     return url.toLowerCase();
   }

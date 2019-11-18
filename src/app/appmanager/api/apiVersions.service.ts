@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent }                           from '@angular/common/http';
 import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
-import { Observable }                                        from 'rxjs/Observable';
+import { Observable }                                        from 'rxjs';
 
 import { ApiVersion } from '../model/apiVersion';
 
@@ -110,7 +110,7 @@ export class ApiVersionsService {
         }
 
         if (openApiFile !== undefined) {
-            formParams = formParams.append('openApiFile', <any>openApiFile) || formParams;
+            formParams.append('openApiFile', openApiFile);
         }
 
         return this.httpClient.post<ApiVersion>(`${this.basePath}/components/${encodeURIComponent(String(componentId))}/apiVersions`,
@@ -274,7 +274,7 @@ export class ApiVersionsService {
         }
 
         if (openApiFile !== undefined) {
-            formParams = formParams.append('openApiFile', <any>openApiFile) || formParams;
+            formParams.append('openApiFile', openApiFile);
         }
 
         return this.httpClient.put<ApiVersion>(`${this.basePath}/apiVersions/${encodeURIComponent(String(apiVersionId))}`,
