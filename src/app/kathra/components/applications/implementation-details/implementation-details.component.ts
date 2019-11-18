@@ -40,6 +40,7 @@ export class ImplementationDetailsComponent implements OnInit {
 
   updateCurrentBranch(branch){
     this.currentBranch = branch
+    this.updateServiceStatus()
   }
 
   getApiVersion() {
@@ -51,16 +52,17 @@ export class ImplementationDetailsComponent implements OnInit {
     let swaggerPath = "/api/v1/swagger.json"
     let url = "";
     if(this.implem != null){
-      let sufix=this.currentBranch;
+      let sufix="-"+this.currentBranch;
       if (this.currentBranch == "master") {
         sufix = ""
       }
-      url = "https://" + this.implem.name + "-" + this.getEnvName() + "-" + sufix + "-svc." + domain + swaggerPath
+      url = "https://" + this.implem.name + "-" + this.getEnvName() + sufix + "-svc." + domain + swaggerPath
     }
     return url.toLowerCase();
   }
 
   updateServiceStatus() {
+    this.status = "unknown"
     this.http.get(this.getUrl()).subscribe(
         response => this.status = "available",
         error => this.status = "stopped" );
