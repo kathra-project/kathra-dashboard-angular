@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent }                           from '@angular/common/http';
 import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
-import { Observable }                                        from 'rxjs/Observable';
+import { Observable }                                        from 'rxjs';
 
 import { ApiFileValidationResponse } from '../model/apiFileValidationResponse';
 
@@ -102,7 +102,7 @@ export class DefaultService {
         }
 
         if (apiFile !== undefined) {
-            formParams = formParams.append('apiFile', <any>apiFile) || formParams;
+            formParams.append('apiFile', <any>apiFile);
         }
 
         return this.httpClient.post<ApiFileValidationResponse>(`${this.basePath}/apiFileValidation`,
