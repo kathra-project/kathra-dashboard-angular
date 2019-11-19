@@ -1,6 +1,6 @@
 {
   "name": "kathra-dashboard",
-  "version": "1.0.0-RC-SNAPSHOT",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --port 8080",
@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^7.2.15",
     "@angular/platform-browser-dynamic": "^7.2.15",
     "@angular/router": "^7.2.15",
+    "angular-highlight-js": "^2.0.1",
     "angular2-highlight-js": "^8.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",

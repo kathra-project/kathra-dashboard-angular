@@ -26,7 +26,7 @@ import { NewEnvAppsComponent } from './components/environments/new-env/new-env-a
 import { NewEnvConfigComponent } from './components/environments/new-env/new-env-config/new-env-config.component';
 import { CatalogueExplorerComponent } from './components/explorers/catalogue-explorer/catalogue-explorer.component';
 import { ComponentDetailsComponent } from './components/applications/component-details/component-details.component';
-import { HighlightJsModule } from 'highlight.js';
+import { HighlightJsModule } from 'angular-highlight-js';
 import { NewAppCompComponent } from './components/applications/new-app/new-app-comp/new-app-comp.component';
 import { CreateAppApiComponent } from './components/applications/new-app/new-app-api/create-app-api/create-app-api.component';
 import { UpdateAppApiComponent } from './components/applications/new-app/new-app-api/update-app-api/update-app-api.component';
@@ -55,7 +55,6 @@ import { SourceRepositoryWidgetComponent } from './components/applications/imple
     CatalogComponent,
     DatasourcesComponent,
     KathraControlComponent,
-
     NewAppComponent,
     AppHomeComponent,
     EnvironmentsDashboardComponent,
