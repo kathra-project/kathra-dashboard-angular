@@ -5,6 +5,11 @@
     a.previous([routerLink]="['/kathra','applications']" fragment="components")
       i.left.chevron.icon
       span Components list
+  
+  .delete
+    a.delete-component.button((click)="deleteComponent()")
+      i.remove.icon
+      | Delete component
 
   .columns
     .apis

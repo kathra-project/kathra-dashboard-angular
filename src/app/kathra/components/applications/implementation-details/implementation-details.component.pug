@@ -6,6 +6,7 @@
       i.left.chevron.icon
       span Implementation list
 
+
   .columns
     .implem-infos
       .createdBy
@@ -26,6 +27,10 @@
         <kathra-source-repository-widget [implementation]="implem" [branches]="branches" [currentBranch]="currentBranch"></kathra-source-repository-widget>
 
     .filters
+
+      a.delete-implementation.button((click)="deleteImplementation()")
+        i.remove.icon
+        | Delete implementation
       a.component-details.button([routerLink]="['/kathra', 'applications', 'component', implem?.component.id]")
         | Component {{ implem?.component?.name }} - v{{apiVersion?.version}}
       .branches

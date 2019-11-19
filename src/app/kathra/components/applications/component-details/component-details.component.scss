@@ -36,6 +36,35 @@
       color: #9FBCBB;
     }
 
+    .delete {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 50px;
+      a {
+        margin: 20px;
+      }
+      .delete-component.button {
+        padding: 1vh;
+        align-self: end;
+        background-color: rgb(188, 159, 159);
+        color: whitesmoke;
+        border: 1px solid lightgrey;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 1.2em;
+        cursor: pointer;
+        user-select: none;
+  
+        &:hover {
+          background-color:#a78080;
+        }
+      }
+    }
+
     .home {
       display: flex;
       flex-flow: column nowrap;
