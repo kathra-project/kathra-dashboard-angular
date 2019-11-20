@@ -2,11 +2,15 @@ image: docker:git
 services:
   - docker:dind
 
+variables:
+  IMAGE_REF: $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME/\//-}
+
+
 before_script:
   - docker info
 
 build_image:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com/
-    - docker build -t registry.gitlab.com/kathra/kathra/kathra-services/kathra-dashboard/angular/kathra-dashboard-angular:$CI_COMMIT_REF_NAME .
-    - docker push registry.gitlab.com/kathra/kathra/kathra-services/kathra-dashboard/angular/kathra-dashboard-angular:$CI_COMMIT_REF_NAME
+    - docker build -t $IMAGE_REF .
+    - docker push $IMAGE_REF
