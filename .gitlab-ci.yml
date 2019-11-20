@@ -11,6 +11,6 @@ before_script:
 
 build_image:
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com/
+    - docker login -u $CI_REGISTRY_USER -p $CI_BUILD_TOKEN $CI_REGISTRY
     - docker build -t $IMAGE_REF .
     - docker push $IMAGE_REF
