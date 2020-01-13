@@ -9,12 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { CatalogEntryTemplateArgument } from './catalogEntryTemplateArgument';
 
 
-export interface Commit { 
-    id?: string;
-    author?: string;
-    message?: string;
-    hash?: string;
-    date?: string;
+export interface CatalogEntryTemplate { 
+    /**
+     * Template Name
+     */
+    name?: string;
+    /**
+     * CodeGen Argument
+     */
+    arguments?: Array<CatalogEntryTemplateArgument>;
 }

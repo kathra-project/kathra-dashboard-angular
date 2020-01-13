@@ -1,5 +1,7 @@
 export * from './apiVersions.service';
 import { ApiVersionsService } from './apiVersions.service';
+export * from './catalogEntries.service';
+import { CatalogEntriesService } from './catalogEntries.service';
 export * from './components.service';
 import { ComponentsService } from './components.service';
 export * from './default.service';
@@ -12,4 +14,4 @@ export * from './pipelines.service';
 import { PipelinesService } from './pipelines.service';
 export * from './repositories.service';
 import { RepositoriesService } from './repositories.service';
-export const APIS = [ApiVersionsService, ComponentsService, DefaultService, GroupsService, ImplementationsService, PipelinesService, RepositoriesService];
+export const APIS = [ApiVersionsService, CatalogEntriesService, ComponentsService, DefaultService, GroupsService, ImplementationsService, PipelinesService, RepositoriesService];

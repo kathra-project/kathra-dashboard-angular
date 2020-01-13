@@ -9,16 +9,28 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Asset } from './asset';
 import { BinaryRepository } from './binaryRepository';
 import { CatalogEntry } from './catalogEntry';
+import { CatalogEntryPackageVersion } from './catalogEntryPackageVersion';
 import { Pipeline } from './pipeline';
-import { Resource } from './resource';
 import { SourceRepository } from './sourceRepository';
 
 
-export interface Asset extends Resource { 
-    binaryRepository?: BinaryRepository;
-    sourceRepository?: SourceRepository;
-    pipeline?: Pipeline;
-    catalogEntries?: Array<CatalogEntry>;
+export interface CatalogEntryPackage extends Asset { 
+    catalogEntry?: CatalogEntry;
+    packageType?: any;
+    /**
+     * Provider
+     */
+    provider?: string;
+    /**
+     * ProviderId
+     */
+    providerId?: string;
+    /**
+     * String
+     */
+    url?: string;
+    versions?: Array<CatalogEntryPackageVersion>;
 }

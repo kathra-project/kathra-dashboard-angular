@@ -9,7 +9,7 @@ export class WebSocketService {
 	// For chat box
 	public connect(url: string): Subject<MessageEvent> {
 		if (!this.subject) {
-			this.subject = this.create(url);
+			//this.subject = this.create(url);
 		}
 		return this.subject;
 	}

@@ -9,12 +9,19 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Group } from './group';
+import { CatalogEntryPackage } from './catalogEntryPackage';
 import { Resource } from './resource';
 
 
-export interface KeyPair extends Resource { 
-    privateKey?: string;
-    publicKey?: string;
-    group?: Group;
+export interface CatalogEntry extends Resource { 
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Icon's URL
+     */
+    icon?: string;
+    packageTemplate?: any;
+    packages?: Array<CatalogEntryPackage>;
 }

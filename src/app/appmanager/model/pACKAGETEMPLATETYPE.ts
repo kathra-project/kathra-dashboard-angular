@@ -11,10 +11,8 @@
  */
 
 
-export interface Commit { 
-    id?: string;
-    author?: string;
-    message?: string;
-    hash?: string;
-    date?: string;
-}
+export type PACKAGETEMPLATETYPE = 'REST_SERVICE';
+
+export const PACKAGETEMPLATETYPE = {
+    RESTSERVICE: 'REST_SERVICE' as PACKAGETEMPLATETYPE
+};

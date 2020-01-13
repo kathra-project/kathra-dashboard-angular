@@ -9,12 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Group } from './group';
+import { Resource } from './resource';
 
 
-export interface Commit { 
-    id?: string;
-    author?: string;
-    message?: string;
-    hash?: string;
-    date?: string;
+export interface BinaryRepository extends Resource { 
+    group?: Group;
+    type?: any;
+    provider?: string;
+    providerId?: string;
+    url?: string;
+    snapshot?: boolean;
 }

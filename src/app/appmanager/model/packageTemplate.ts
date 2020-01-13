@@ -9,12 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { PackageTemplateArgument } from './packageTemplateArgument';
 
 
-export interface Commit { 
-    id?: string;
-    author?: string;
-    message?: string;
-    hash?: string;
-    date?: string;
+export interface PackageTemplate { 
+    /**
+     * Name
+     */
+    name?: string;
+    /**
+     * Catalog entry arguments
+     */
+    arguments?: Array<PackageTemplateArgument>;
 }

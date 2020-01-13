@@ -7,6 +7,7 @@ import { K8sWsService, K8sApplication, KathraAppComponent } from '../../../kathr
 import { MulticritInputFilterComponent, ColorPickerService } from '../../../kathra-tools';
 import { SidebarsService } from '../../../kathra-sidebars';
 import { ModalComponent, ModalsService } from '../../../kathra-modals';
+import { CatalogEntriesService, CatalogEntryPackage, CatalogEntryPackageVersion, CatalogEntry } from '../../../appmanager';
 
 @Component({
   selector: 'kathra-catalog',
@@ -16,7 +17,9 @@ import { ModalComponent, ModalsService } from '../../../kathra-modals';
 })
 export class CatalogComponent implements OnInit {
   licence: FormGroup;
-  focusedApp: K8sApplication;
+  focusedCatalogEntry: CatalogEntry;
+  focusedCatalogEntryPackage: CatalogEntryPackage;
+  focusedCatalogEntryPackageVersion: CatalogEntryPackageVersion;
   filters = {
     cat: undefined,
     team: undefined,
@@ -25,6 +28,7 @@ export class CatalogComponent implements OnInit {
 
   teams = ['SVA', 'SCA', 'CDF', 'MSM', 'TAS'];
   filteredApps: Array<K8sApplication> = this.k8sModel.k8sApplications;
+  catalogEntries: Array<CatalogEntryPackage>; 
 
   @Input() 
     data: {};
@@ -33,6 +37,7 @@ export class CatalogComponent implements OnInit {
   displayMode = 'by-cat';
 
   constructor(
+    private catalogEntriesSvc: CatalogEntriesService,
     private k8sModel: K8sWsService,
     private user: KathraUserService,
     private sbService: SidebarsService,
@@ -54,6 +59,7 @@ export class CatalogComponent implements OnInit {
   }
   
   public appsCategoriesByChar(full?:boolean): {[key: string]: Array<string>} {
+    return {"xx" : ['xx'] };
     let cats = this.appsCategories(true).sort();
     
     let byChar;
@@ -216,13 +222,37 @@ export class CatalogComponent implements OnInit {
     this.catFilter = cat;
   }
 
-  loadDetails(appId){
-    this.focusedApp = this.k8sModel.k8sApplications.find(item => item.id == appId);
+  loadDetails(catalogEntryPackage: CatalogEntryPackage){
+    this.focusedCatalogEntry = catalogEntryPackage.catalogEntry;
+    this.focusedCatalogEntryPackage = catalogEntryPackage;
+    this.focusedCatalogEntryPackageVersion = catalogEntryPackage.versions[0];
+
+    this.catalogEntriesSvc.getCatalogEntryPackageFromProviderId(this.focusedCatalogEntryPackage.providerId).subscribe(item => {
+      this.focusedCatalogEntryPackage = item;
+    })
+    this.catalogEntriesSvc.getCatalogEntryPackageFromProviderIdAndVersion(this.focusedCatalogEntryPackage.providerId, this.focusedCatalogEntryPackageVersion.version).subscribe(item => {
+      this.focusedCatalogEntryPackageVersion = item.versions[0];
+    })
     this.modals.open("app-details");
+  }
+
+  loadCatalogEntryPackageVersion(catalogEntryPackageVersion: CatalogEntryPackageVersion) {
+    this.catalogEntriesSvc.getCatalogEntryPackageFromProviderIdAndVersion(this.focusedCatalogEntryPackage.providerId, catalogEntryPackageVersion.version).subscribe(item => {
+      this.focusedCatalogEntryPackageVersion = item.versions[0];
+    })
   }
 
   ngOnInit() {
     this.sbService.closeAll();
+
+
+    this.catalogEntriesSvc.getCatalogEntryPackages().subscribe((data) => {
+      this.catalogEntries = data;
+      console.log("Filtered apps :", this.catalogEntries);
+    }, (err) => {
+      this.catalogEntries = [];
+    });
+
     this.filteredApps = this.k8sModel.k8sApplications;
     //this.teams = this.user.groups.map(item => item.name.toUpperCase());
     this.teams = [];

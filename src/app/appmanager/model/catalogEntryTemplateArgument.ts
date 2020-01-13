@@ -11,10 +11,17 @@
  */
 
 
-export interface Commit { 
-    id?: string;
-    author?: string;
-    message?: string;
-    hash?: string;
-    date?: string;
+export interface CatalogEntryTemplateArgument { 
+    /**
+     * Argument key to generate codegen
+     */
+    key?: string;
+    /**
+     * Argument value to generate codegen
+     */
+    value?: string;
+    /**
+     * Argument constraint
+     */
+    contrainst?: string;
 }

@@ -60,7 +60,7 @@
             .title
               .name {{ cat }}
             .content
-              kathra-app(*ngFor="let app of catalogAppsByCat(cat)", [appId]="app.id", (click)="loadDetails(app.id)")
+              kathra-app(*ngFor="let catalogEntry of catalogEntries", [appId]="catalogEntry.providerId", [catalogEntryPackage]="catalogEntry", (click)="loadDetails(catalogEntry)")
   
   .drawer.bundles(*ngIf="false")
   .drawer.platforms(*ngIf="false")
@@ -71,13 +71,13 @@ kathra-modal(id="app-details")
       .modal-closer((click)="modals.close('app-details')")
         i.large.remove.icon
       .modal-header
-        .title {{ focusedApp?.name }}
-      .content
+        .title {{ focusedCatalogEntry?.name }} - {{ focusedCatalogEntryPackageVersion?.version }}
+      .catalog-item-content
         .infos
           .col
-            img([src]="focusedApp?.iconUrl")
+            img([src]="focusedCatalogEntry?.icon")
             .buttons
-              a.website(target="_blank" href="{{focusedApp?.websiteUrl}}")
+              a.website(target="_blank" href="{{focusedCatalogEntryPackage?.url}}")
                 i.eye.icon
                 .text Website
               a.disabled.doc
@@ -87,7 +87,16 @@ kathra-modal(id="app-details")
                 i.cogs.icon
                 .text Test
           .col.desc
-            p {{ focusedApp?.description }}
+            p {{ focusedCatalogEntry?.description }}
+            p {{ focusedCatalogEntryPackageVersion?.documentation }}
+          .col
+            .buttons(*ngFor="let pckVersion of focusedCatalogEntryPackage?.versions")
+              a.disabled.version(*ngIf="pckVersion.version == focusedCatalogEntryPackageVersion.version")
+                i.icon
+                .text {{ pckVersion.version }}
+              a.version(*ngIf="pckVersion.version != focusedCatalogEntryPackageVersion.version", (click)="loadCatalogEntryPackageVersion(pckVersion)")
+                i.icon
+                .text {{ pckVersion.version }}
         .row 
           
   .modal-background

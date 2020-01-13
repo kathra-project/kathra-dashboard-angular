@@ -29,7 +29,7 @@ export class K8sWsService {
     private notifs: CustomNotificationsService) {
     // Do stuff...
     
-    this.initWebsocket();
+    //this.initWebsocket();
   }
   
   /**

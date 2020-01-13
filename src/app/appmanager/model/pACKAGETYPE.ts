@@ -11,10 +11,8 @@
  */
 
 
-export interface Commit { 
-    id?: string;
-    author?: string;
-    message?: string;
-    hash?: string;
-    date?: string;
-}
+export type PACKAGETYPE = 'HELM';
+
+export const PACKAGETYPE = {
+    HELM: 'HELM' as PACKAGETYPE
+};
