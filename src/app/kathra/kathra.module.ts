@@ -16,6 +16,8 @@ import { KathraModalsModule } from '../kathra-modals';
 import { KathraSidebarsModule } from '../kathra-sidebars';
 import { AppHomeComponent } from './components/applications/app-home/app-home.component';
 
+import { NgxMdModule } from 'ngx-md';
+
 import { NewEnvService } from './services/new-env.service';
 import { NewAppService } from './services/new-app.service';
 import { EnvironmentsDashboardComponent } from './components/environments/environments-dashboard/environments-dashboard.component';
@@ -38,6 +40,7 @@ import { SourceRepositoryWidgetComponent } from './components/applications/imple
 
 @NgModule({
   imports: [
+    NgxMdModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

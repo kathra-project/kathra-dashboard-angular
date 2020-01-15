@@ -3,24 +3,19 @@
     .source-filters
       .label SOURCES
       .radio.filter
-        label SystemX
+        label Internal
         .checkbox
           input(type="checkbox" formControlName="irtsystemx" id="irtsystemx", (change)="refreshFilters()")
           label(for="irtsystemx")
       .radio.filter
-        label Open Source
+        label External
         .checkbox
           input(type="checkbox" formControlName="opensource" id="opensource", (change)="refreshFilters()")
           label(for="opensource")
-      .radio.filter
-        label Partners
-        .checkbox
-          input(type="checkbox" formControlName="partners" id="partners", (change)="refreshFilters()")
-          label(for="partners")
 
     .flex-filler
 
-    .categories.list((click)="toggleList('categories')")
+    .categories.list((click)="toggleList('categories')").disabled
       .title CATEGORIES
       i.large.angle.down.icon
       .categories.list.content
@@ -53,15 +48,9 @@
 
   .drawer.apps
     .filtered.view.cats(*ngIf="displayMode == 'by-cat'")
-      .category-by-char(*ngFor="let catChar of appsCategoriesByChar() | asArray")
-        .color.bubble
-          .text {{ catChar.key }}
-        .category(*ngFor="let cat of catChar.value")
-            .title
-              .name {{ cat }}
-            .content
-              kathra-app(*ngFor="let catalogEntry of catalogEntries", [appId]="catalogEntry.providerId", [catalogEntryPackage]="catalogEntry", (click)="loadDetails(catalogEntry)")
-  
+      .content
+        kathra-app(*ngFor="let catalogEntry of catalogEntriesFiltred", [appId]="catalogEntry.providerId", [catalogEntryPackage]="catalogEntry", (click)="loadDetails(catalogEntry)")
+
   .drawer.bundles(*ngIf="false")
   .drawer.platforms(*ngIf="false")
 
@@ -72,23 +61,23 @@ kathra-modal(id="app-details")
         i.large.remove.icon
       .modal-header
         .title {{ focusedCatalogEntry?.name }} - {{ focusedCatalogEntryPackageVersion?.version }}
-      .catalog-item-content
-        .infos
+      .catalog-item-content.container
+        .infos.row
           .col
             img([src]="focusedCatalogEntry?.icon")
             .buttons
               a.website(target="_blank" href="{{focusedCatalogEntryPackage?.url}}")
                 i.eye.icon
                 .text Website
-              a.disabled.doc
+              //a.disabled.doc
                 i.file.alternate.icon
                 .text Documentation
-              a.disabled.test
+              a.disabled.deploy
                 i.cogs.icon
-                .text Test
+                .text Deploy
           .col.desc
             p {{ focusedCatalogEntry?.description }}
-            p {{ focusedCatalogEntryPackageVersion?.documentation }}
+            ngx-md([data]="focusedCatalogEntryPackageVersion?.documentation")
           .col
             .buttons(*ngFor="let pckVersion of focusedCatalogEntryPackage?.versions")
               a.disabled.version(*ngIf="pckVersion.version == focusedCatalogEntryPackageVersion.version")
@@ -97,6 +86,6 @@ kathra-modal(id="app-details")
               a.version(*ngIf="pckVersion.version != focusedCatalogEntryPackageVersion.version", (click)="loadCatalogEntryPackageVersion(pckVersion)")
                 i.icon
                 .text {{ pckVersion.version }}
-        .row 
+        .row.row
           
   .modal-background
