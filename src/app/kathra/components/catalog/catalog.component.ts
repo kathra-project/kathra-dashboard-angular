@@ -130,13 +130,12 @@ export class CatalogComponent implements OnInit {
     this.refreshFilters();
   }
   refreshFilters(){
-
-    if (!this.filters || !this.filters.none  || this.filters.none.length == 0) {
+    if (!this.filters && !this.filters.none && this.filters.none.length == 0 && this.filters.team.length == 0) {
       this.catalogEntriesFiltred = this.catalogEntries;
     } else {
       this.catalogEntriesFiltred = []
       for(var entry in this.catalogEntries) {
-        if (this.filters.none.some(keywork => this.catalogEntries[entry].catalogEntry.name.match(keywork))) {
+        if (this.filters.none && this.filters.none.some(keywork => this.catalogEntries[entry].catalogEntry.name.match(keywork))) {
           this.catalogEntriesFiltred.push(this.catalogEntries[entry])
         }
       }
@@ -270,16 +269,15 @@ export class CatalogComponent implements OnInit {
       this.catalogEntries = [];
     });
 
+    this.teams = [];
     this.groupsService.getGroups().subscribe((data) =>  {
       this.teams = data.map(group => group.name);
     })
     this.filteredApps = this.k8sModel.k8sApplications;
-    this.teams = [];
 
     this.licence = new FormGroup({
-      irtsystemx: new FormControl(true),
-      opensource: new FormControl(true),
-      partners: new FormControl(true)
+      internal: new FormControl(true),
+      external: new FormControl(true)
     })
   }
 
