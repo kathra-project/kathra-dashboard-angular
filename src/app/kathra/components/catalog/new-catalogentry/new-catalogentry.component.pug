@@ -1,0 +1,52 @@
+form([formGroup]="basicInfoForm")
+  .content
+    .title NEW CATALOG ENTRY 
+    a.cancel.control([routerLink]="['/kathra', 'catalog']")
+      .icon X
+      .text Cancel
+    .form
+      .row
+        .col
+          label(for="template") Step 1 - Select a template
+          select((change)="selectTemplate($event.target.value)" name="template")
+            option(selected value="") Choose a template
+            option(*ngFor="let template of templates", [value]="template.name") {{ template.name }}
+
+
+        .col(*ngIf="templateSelected && templateSelected.name == 'RestApiFromImplementation'")
+          label(for="templateArguments" ) Step 2 - Configure template
+          .argument(*ngFor="let argument of templateSelected.arguments")
+            .row(*ngIf="argument.key == 'NAME'")
+              label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
+              input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
+            .row(*ngIf="argument.key == 'DESCRIPTION'")
+              label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
+              input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
+            .row(*ngIf="argument.key == 'GROUP_PATH'")
+              label(for="{{argument.key}}" ) Team
+              select(formControlName="{{argument.key}}" name="{{argument.key}}" )
+                option(*ngFor="let group of groups", [value]="group.path") {{ group.name }}
+            .row(*ngIf="argument.key == 'IMPLEMENTATION_ID'")
+              label(for="{{argument.key}}" ) Implementation
+              select((change)="selectImplementation($event.target.value)" formControlName="{{argument.key}}" name="{{argument.key}}" )
+                option(selected value="") Choose an implementation
+                option(*ngFor="let implementation of implementations", [value]="implementation.id") {{ implementation.name }}
+            .row(*ngIf="argument.key == 'IMPLEMENTATION_VERSION'")
+              label(for="{{argument.key}}" ) Implementation's Version
+              select(formControlName="{{argument.key}}" name="{{argument.key}}" )
+                option(selected value="") Choose a version
+                option(*ngFor="let v of implementationVersions", [value]="v.id") {{ v.version }}
+
+
+
+        .col(*ngIf="templateSelected && templateSelected.name != 'RestApiFromImplementation'")
+          label(for="templateArguments" ) Step 2 - Configure template
+          .row.argument(*ngFor="let argument of templateSelected.arguments")
+            label(for="argument.key" ) {{ argument.key | titlecase }}
+            input( type="text" id="argument.key" name="argument.name")
+    .controls
+      .button.hidden
+      .button.hidden
+      .button.tbc((click)="addEntry()", [ngClass]="{'disabled': !isValidForm() || submiting}")
+        span.text ADD ENTRY INTO CATALOG
+        i.right.chevron.icon

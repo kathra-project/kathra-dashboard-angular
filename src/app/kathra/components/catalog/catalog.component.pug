@@ -1,5 +1,5 @@
 .filters.inline.form
-  form.other-filters([formGroup]="licence")
+  form.other-filters([formGroup]="sources")
     .source-filters
       .label SOURCES
       .radio.filter
@@ -15,30 +15,18 @@
 
     .flex-filler
 
-    .categories.list((click)="toggleList('categories')").disabled
-      .title CATEGORIES
-      i.large.angle.down.icon
-      .categories.list.content
-        .by-char(*ngFor="let catChar of appsCategoriesByChar(true) | asArray")
-          .color.bubble([ngClass]="{small: catChar.value == null}")
-            .text {{ catChar.key }}
-          .category(*ngFor="let cat of catChar.value")
-            .name {{ cat }}
+  .search
+    .sgm2.icon.input
+      input([(ngModel)]="filter", (change)="refreshFilters()" placeholder="Search & filter")
+      i.search.icon
 
-    .teams.list.disabled
-      .title TEAMS
-      i.large.angle.down.icon
-      .teams.list.content
-        .by-char(*ngFor="let catChar of appsTeamsByChar(true) | asArray")
-          .color.bubble([ngClass]="{small: catChar.value == null}")
-            .text {{ catChar.key }}
-          .category(*ngFor="let cat of catChar.value")
-            .name {{ cat }}
-  
-  .multi-filter
-    kathra-filter([filters]="[{values:appsCategories(false), prefix: 'cat'}, {values:teams, prefix: 'team'}]", [placeholder]="'Search & filter the catalog...'", (onFilteringOptsRefresh)="updateFilters($event)")
+router-outlet
 
 .catalog-content
+  a.button.create.new.catalogentry([routerLink]="['/kathra', 'catalog', 'new']")
+    i.plus.icon
+    | Create a new catalog entry
+
   .tabs
     .tab.apps.selected APPLICATIONS
     .splitter
@@ -47,7 +35,7 @@
     .disabled.tab.platforms PLATFORMS
 
   .drawer.apps
-    .filtered.view.cats(*ngIf="displayMode == 'by-cat'")
+    .filtered.view
       .content
         kathra-app(*ngFor="let catalogEntry of catalogEntriesFiltred", [appId]="catalogEntry.providerId", [catalogEntryPackage]="catalogEntry", (click)="loadDetails(catalogEntry)")
 
@@ -63,29 +51,24 @@ kathra-modal(id="app-details")
         .title {{ focusedCatalogEntry?.name }} - {{ focusedCatalogEntryPackageVersion?.version }}
       .catalog-item-content.container
         .infos.row
-          .col
-            img([src]="focusedCatalogEntry?.icon")
+          .col.info
+            img(*ngIf="focusedCatalogEntry && focusedCatalogEntry.icon", [src]="focusedCatalogEntry?.icon" onerror="this.style.display='none'")
             .buttons
-              a.website(target="_blank" href="{{focusedCatalogEntryPackage?.url}}")
+              a.website(*ngIf="focusedCatalogEntryPackage && focusedCatalogEntryPackage.metadata && focusedCatalogEntryPackage.metadata.website", target="_blank" href="{{focusedCatalogEntryPackage?.metadata?.website}}")
                 i.eye.icon
                 .text Website
-              //a.disabled.doc
+              a.doc(*ngIf="focusedCatalogEntryPackage && focusedCatalogEntryPackage.metadata && focusedCatalogEntryPackage.metadata.sourceUrl", target="_blank" href="{{focusedCatalogEntryPackage?.metadata?.sourceUrl}}")
                 i.file.alternate.icon
-                .text Documentation
+                .text Source
               a.disabled.deploy
                 i.cogs.icon
                 .text Deploy
+              select.versions((change)="loadCatalogEntryPackageVersion($event.target.value)")
+                option(*ngFor="let v of focusedCatalogEntryPackage?.versions", [value]="v.version") {{ v.version }}
+
           .col.desc
             p {{ focusedCatalogEntry?.description }}
             ngx-md([data]="focusedCatalogEntryPackageVersion?.documentation")
-          .col
-            .buttons(*ngFor="let pckVersion of focusedCatalogEntryPackage?.versions")
-              a.disabled.version(*ngIf="pckVersion.version == focusedCatalogEntryPackageVersion.version")
-                i.icon
-                .text {{ pckVersion.version }}
-              a.version(*ngIf="pckVersion.version != focusedCatalogEntryPackageVersion.version", (click)="loadCatalogEntryPackageVersion(pckVersion)")
-                i.icon
-                .text {{ pckVersion.version }}
         .row.row
           
   .modal-background

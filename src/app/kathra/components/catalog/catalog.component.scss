@@ -264,6 +264,22 @@
       }
     }
   }
+  .new {
+    width: 60%;
+    min-width: 380px;
+    padding: 10px;
+    margin: 20px 20% 20px 20%;
+    border: 1px solid
+    lightgrey;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2em;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
   .drawer {
     flex: 1;
@@ -374,7 +390,7 @@
 
 kathra-modal {
   .modal {
-    max-width: 70%;
+    max-width: 80%;
     max-height: 80%;
     margin: auto;
     
@@ -387,6 +403,16 @@ kathra-modal {
         margin: 20px;
       }
     }
+
+    .info {
+      width: 300px;
+      float: left;
+    }
+
+    .versions {
+      margin-top: 15px;
+    }
+
 
     .catalog-item-content {
       flex: 1;

@@ -17,10 +17,11 @@ import { group } from '@angular/animations';
   providers: [ModalsService]
 })
 export class CatalogComponent implements OnInit {
-  licence: FormGroup;
+  sources: FormGroup;
   focusedCatalogEntry: CatalogEntry;
   focusedCatalogEntryPackage: CatalogEntryPackage;
   focusedCatalogEntryPackageVersion: CatalogEntryPackageVersion;
+  filter: string = "";
   filters = {
     cat: undefined,
     team: undefined,
@@ -33,7 +34,7 @@ export class CatalogComponent implements OnInit {
   catalogEntriesFiltred: Array<CatalogEntryPackage>; 
 
   @Input() 
-    data: {};
+  data: {};
   nameFilter: string = "";
   catFilter: string = "all";
   displayMode = 'by-cat';
@@ -48,157 +49,20 @@ export class CatalogComponent implements OnInit {
     private modals: ModalsService
   ) { }
 
-  public appsCategories(filtered?: boolean): Array<string> {
-    let cats: Array<string> = [];
-    let ref = filtered? this.filteredApps : this.k8sModel.k8sApplications;
-
-    for(let app of ref){
-      if(!cats.includes(app.categories[0])){
-        cats.push(app.categories[0]);
-      }
-    }
-
-    return cats;
-  }
-  
-  public appsCategoriesByChar(full?:boolean): {[key: string]: Array<string>} {
-    return {"xx" : ['xx'] };
-    let cats = this.appsCategories(true).sort();
-    
-    let byChar;
-    
-    if(full){
-      byChar = {
-        a: null, b:null, c: null, d:null, e: null, f:null, g: null, h:null, i: null, j:null, k: null, l:null, m: null,
-        n: null, o: null, p:null, q: null, r:null, s: null, t:null, u: null, v:null, w: null, x:null, y: null, z: null
-      }
-    }
-    else {
-      byChar = {}
-    }
-
-    for(let cat of cats){
-      let firstChar = cat[0];
-      
-      if(!byChar[firstChar]){
-        byChar[firstChar] = [];
-      }
-      byChar[firstChar].push(cat)
-    }
-    
-    return byChar;
-  }
-
-  public appsTeamsByChar(full?:boolean): {[key: string]: Array<string>} {
-    let teams = this.teams.sort();
-    let byChar;
-    
-    if(full){
-      byChar = {
-        a: null, b:null, c: null, d:null, e: null, f:null, g: null, h:null, i: null, j:null, k: null, l:null, m: null,
-        n: null, o: null, p:null, q: null, r:null, s: null, t:null, u: null, v:null, w: null, x:null, y: null, z: null
-      }
-    }
-    else {
-      byChar = {}
-    }
-
-    for(let team of teams){
-      let firstChar = team[0];
-      
-      if(!byChar[firstChar]){
-        byChar[firstChar] = [];
-      }
-      byChar[firstChar].push(team)
-    }
-    
-    return byChar;
-  }
-
-  catalogAppsByCat(string): Array<K8sApplication>{
-    let byCatApps: Array<K8sApplication> = [];
-    for(let app of this.filteredApps){
-      if(app.categories[0] == string){
-        byCatApps.push(app);
-      }
-    }
-    return byCatApps;
-  }
-
   updateFilters($event){
     this.filters = $event;
     this.refreshFilters();
   }
   refreshFilters(){
-    if (!this.filters && !this.filters.none && this.filters.none.length == 0 && this.filters.team.length == 0) {
-      this.catalogEntriesFiltred = this.catalogEntries;
-    } else {
-      this.catalogEntriesFiltred = []
-      for(var entry in this.catalogEntries) {
-        if (this.filters.none && this.filters.none.some(keywork => this.catalogEntries[entry].catalogEntry.name.match(keywork))) {
-          this.catalogEntriesFiltred.push(this.catalogEntries[entry])
-        }
+    this.catalogEntriesFiltred = []
+    for(var i in this.catalogEntries) {
+      var entry = this.catalogEntries[i];
+      if (!this.filter) {
+          this.catalogEntriesFiltred.push(entry);
+      } else if (entry.catalogEntry && entry.catalogEntry.name && entry.catalogEntry.name.match(this.filter)) {
+          this.catalogEntriesFiltred.push(entry);
       }
     }
-
-  }
-
-  refreshFiltersOld(){
-    // Update visible content depending on filters provided
-    // {cat: [], team: []; none: []}
-    let sources = {
-      irtsystemx: this.licence.controls.irtsystemx.value,
-      opensource: this.licence.controls.opensource.value,
-      partners: this.licence.controls.partners.value
-    };
-    let catCandidates = [];
-    let teamCandidates = [];
-    let finalCandidates = [];
-
-    // Apps with a category in cat
-    if(this.filters.cat){
-      for(let app of this.k8sModel.k8sApplications){
-        if(this.filters.cat.includes(app.categories[0])){
-          catCandidates.push(app);
-        }
-      }
-    } else {
-      catCandidates = this.k8sModel.k8sApplications;
-    }
-    // Apps with a team in team
-    /* if(this.filters.team){
-      for(let app of this.k8sModel.k8sApplications){
-        if(!this.filters.team.includes(app.group)){
-          teamCandidates.push(app);
-        }
-      }
-    } else {
-      teamCandidates = this.k8sModel.k8sApplications;
-    } */
-
-    for(let app of catCandidates){
-      //for(let app2 of teamCandidates){
-        //if(app.id == app2.id){
-          if(this.hasAllKeywords(app, this.filters.none)){
-            finalCandidates.push(app);
-          }
-        //}
-      //}
-    }
-    if(!sources.opensource && !sources.partners && !sources.irtsystemx){
-      this.filteredApps = finalCandidates;
-    }
-    else {
-      this.filteredApps = finalCandidates.filter(function(item){
-        for(let src in sources){
-          if(sources[src] && item.licence == src){
-            return true;
-          }
-        }
-      });
-    }
-
-    console.log("Filtered apps :", this.filteredApps);
   }
 
   hasAllKeywords(app, keywords){
@@ -246,13 +110,13 @@ export class CatalogComponent implements OnInit {
     this.catalogEntriesSvc.getCatalogEntryPackageFromProviderId(this.focusedCatalogEntryPackage.providerId).subscribe(item => {
       this.focusedCatalogEntryPackage = item;
     })
-    this.loadCatalogEntryPackageVersion(this.focusedCatalogEntryPackageVersion)
+    this.loadCatalogEntryPackageVersion(this.focusedCatalogEntryPackageVersion.version)
     this.modals.open("app-details");
   }
 
-  loadCatalogEntryPackageVersion(catalogEntryPackageVersion: CatalogEntryPackageVersion) {
+  loadCatalogEntryPackageVersion(version: string) {
     this.focusedCatalogEntryPackageVersion.documentation = "loading..."
-    this.catalogEntriesSvc.getCatalogEntryPackageFromProviderIdAndVersion(this.focusedCatalogEntryPackage.providerId, catalogEntryPackageVersion.version).subscribe(item => {
+    this.catalogEntriesSvc.getCatalogEntryPackageFromProviderIdAndVersion(this.focusedCatalogEntryPackage.providerId, version).subscribe(item => {
       this.focusedCatalogEntryPackageVersion = item.versions[0];
     })
   }
@@ -264,7 +128,6 @@ export class CatalogComponent implements OnInit {
     this.catalogEntriesSvc.getCatalogEntryPackages().subscribe((data) => {
       this.catalogEntries = data;
       this.catalogEntriesFiltred = data
-      console.log("Filtered apps :", this.catalogEntries);
     }, (err) => {
       this.catalogEntries = [];
     });
@@ -275,7 +138,7 @@ export class CatalogComponent implements OnInit {
     })
     this.filteredApps = this.k8sModel.k8sApplications;
 
-    this.licence = new FormGroup({
+    this.sources = new FormGroup({
       internal: new FormControl(true),
       external: new FormControl(true)
     })

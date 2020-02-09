@@ -1,16 +1,19 @@
 .app
   .header
-    //.team.color([style.backgroundColor]="app.licence == 'opensource' ? white: getAppColor(app.licence, 'normal')")
     .content
-      .image(*ngIf="catalogEntryPackage.catalogEntry.icon != null")
-        img.logo([src]="catalogEntryPackage.catalogEntry.icon")
-      .name(title="{{ catalogEntryPackage.catalogEntry.name }}")
+      .image(*ngIf="catalogEntryPackage.catalogEntry != null && catalogEntryPackage.catalogEntry.icon != null")
+        img.logo([src]="catalogEntryPackage.catalogEntry.icon", onerror="this.style.display='none'")
+      .name(*ngIf="catalogEntryPackage.catalogEntry != null" title="{{ catalogEntryPackage.catalogEntry.name }}")
         .text {{ catalogEntryPackage.catalogEntry.name }}
       .controls(*ngIf="display != 'compact'")
         .favorite
           i.fav.yellow.empty.star.icon
-        .select
-          i.grey.check.circle.outline.icon
-  .footer(*ngIf="display != 'compact'")
+        .select(*ngIf="catalogEntryPackage.catalogEntry && catalogEntryPackage.catalogEntry.status == 'READY'")
+          i.green.check.circle.outline.icon
+        .select(*ngIf="catalogEntryPackage.catalogEntry && (catalogEntryPackage.catalogEntry.status == 'PENDING' || catalogEntryPackage.catalogEntry.status == 'UPDATING')")
+          i.yellow.check.circle.outline.icon
+        .select(*ngIf="catalogEntryPackage.catalogEntry && catalogEntryPackage.catalogEntry.status == 'ERROR'")
+          i.red.check.circle.outline.icon
+  .footer(*ngIf="display != 'compact' && catalogEntryPackage.versions != null && catalogEntryPackage.catalogEntry != null")
     .cat([style.backgroundColor]="color.normal") {{ catalogEntryPackage.versions[0].version }}
-    .infos([style.backgroundColor]="color.light") {{ catalogEntryPackage.catalogEntry.description }}run
+    .infos([style.backgroundColor]="color.light") {{ catalogEntryPackage.catalogEntry.description }}

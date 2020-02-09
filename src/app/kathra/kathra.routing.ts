@@ -4,6 +4,7 @@ import { KathraComponent } from './components/kathra/kathra.component';
 import { ApplicationsComponent } from './components/applications/applications.component';
 import { AppHomeComponent } from './components/applications/app-home/app-home.component';
 import { NewAppComponent } from './components/applications/new-app/new-app.component';
+import { NewCatalogEntryComponent } from './components/catalog/new-catalogentry/new-catalogentry.component';
 import { NewAppCompComponent } from './components/applications/new-app/new-app-comp/new-app-comp.component';
 import { CreateAppApiComponent } from './components/applications/new-app/new-app-api/create-app-api/create-app-api.component';
 import { UpdateAppApiComponent } from './components/applications/new-app//new-app-api/update-app-api/update-app-api.component';
@@ -119,12 +120,21 @@ const routes: Routes = [
       },
       { 
         path: 'catalog', 
-        component: CatalogComponent,
         data: {
           animation: {
             value: 'catalog',
           }
-        }
+        },
+        children: [
+          {
+            path: '',
+            component: CatalogComponent
+          },
+          {
+            path: 'new',
+            component: NewCatalogEntryComponent
+          }
+        ]
       },
       { 
         path: 'datasources', 
@@ -136,49 +146,6 @@ const routes: Routes = [
         }
       }
     ]
-    /*children: [
-      {
-        path: '',
-        children: [
-          { 
-            path: 'applications', 
-            component: ApplicationsComponent,
-            data: {
-              animation: {
-                value: 'applications',
-              }
-            }
-          },
-          { 
-            path: 'environments', 
-            component: EnvironmentsComponent,
-            data: {
-              animation: {
-                value: 'environments',
-              }
-            }
-          },
-          { 
-            path: 'catalog', 
-            component: CatalogComponent,
-            data: {
-              animation: {
-                value: 'catalog',
-              }
-            }
-          },
-          { 
-            path: 'datasources', 
-            component: DatasourcesComponent,
-            data: {
-              animation: {
-                value: 'datasources',
-              }
-            }
-          }
-        ]
-      }
-    ]*/
   }
 ];
 
