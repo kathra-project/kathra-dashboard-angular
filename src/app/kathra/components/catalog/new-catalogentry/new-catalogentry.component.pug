@@ -13,37 +13,34 @@ form([formGroup]="basicInfoForm")
             option(*ngFor="let template of templates", [value]="template.name") {{ template.name }}
 
 
-        .col(*ngIf="templateSelected && templateSelected.name == 'RestApiFromImplementation'")
+        .col(*ngIf="templateSelected")
           label(for="templateArguments" ) Step 2 - Configure template
           .argument(*ngFor="let argument of templateSelected.arguments")
-            .row(*ngIf="argument.key == 'NAME'")
-              label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
-              input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
-            .row(*ngIf="argument.key == 'DESCRIPTION'")
-              label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
-              input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
-            .row(*ngIf="argument.key == 'GROUP_PATH'")
-              label(for="{{argument.key}}" ) Team
-              select(formControlName="{{argument.key}}" name="{{argument.key}}" )
-                option(*ngFor="let group of groups", [value]="group.path") {{ group.name }}
-            .row(*ngIf="argument.key == 'IMPLEMENTATION_ID'")
-              label(for="{{argument.key}}" ) Implementation
-              select((change)="selectImplementation($event.target.value)" formControlName="{{argument.key}}" name="{{argument.key}}" )
-                option(selected value="") Choose an implementation
-                option(*ngFor="let implementation of implementations", [value]="implementation.id") {{ implementation.name }}
-            .row(*ngIf="argument.key == 'IMPLEMENTATION_VERSION'")
-              label(for="{{argument.key}}" ) Implementation's Version
-              select(formControlName="{{argument.key}}" name="{{argument.key}}" )
-                option(selected value="") Choose a version
-                option(*ngFor="let v of implementationVersions", [value]="v.id") {{ v.version }}
+            div([ngSwitch]="argument.key")
+              .row(*ngSwitchCase="'NAME'")
+                label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
+                input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
+              .row(*ngSwitchCase="'DESCRIPTION'")
+                label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
+                input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
+              .row(*ngSwitchCase="'GROUP_PATH'")
+                label(for="{{argument.key}}" ) Team
+                select(formControlName="{{argument.key}}" name="{{argument.key}}" )
+                  option(*ngFor="let group of groups", [value]="group.path") {{ group.name }}
+              .row(*ngSwitchCase="'IMPLEMENTATION_ID'")
+                label(for="{{argument.key}}" ) Implementation
+                select((change)="selectImplementation($event.target.value)" formControlName="{{argument.key}}" name="{{argument.key}}" )
+                  option(selected value="") Choose an implementation
+                  option(*ngFor="let implementation of implementations", [value]="implementation.id") {{ implementation.name }}
+              .row(*ngSwitchCase="'IMPLEMENTATION_VERSION'")
+                label(for="{{argument.key}}" ) Implementation's Version
+                select(formControlName="{{argument.key}}" name="{{argument.key}}" )
+                  option(selected value="") Choose a version
+                  option(*ngFor="let v of implementationVersions", [value]="v.id") {{ v.version }}
+              .row(*ngSwitchDefault)
+                label(for="argument.key" ) {{ argument.key | titlecase }}
+                input( type="text" id="argument.key" name="argument.name")
 
-
-
-        .col(*ngIf="templateSelected && templateSelected.name != 'RestApiFromImplementation'")
-          label(for="templateArguments" ) Step 2 - Configure template
-          .row.argument(*ngFor="let argument of templateSelected.arguments")
-            label(for="argument.key" ) {{ argument.key | titlecase }}
-            input( type="text" id="argument.key" name="argument.name")
     .controls
       .button.hidden
       .button.hidden

@@ -36,7 +36,7 @@ export class FormAppApiComponent implements OnInit {
   goNext() {
     if( this.isApiVersionReady()){
       this.newApp.creationStep = 3;
-      this.router.navigate(['..', 'implementation'], {relativeTo: this.route});
+      this.router.navigate(["/", "kathra", "applications", "new", "implementation"]);
     }
   }
 

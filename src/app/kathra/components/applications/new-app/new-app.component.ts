@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { NewAppService } from '../../../services/new-app.service';
@@ -11,10 +11,14 @@ import { NewAppService } from '../../../services/new-app.service';
 export class NewAppComponent implements OnInit {
 
   constructor(
-    private newApp: NewAppService
+    private newApp: NewAppService,
+    private cdRef:ChangeDetectorRef
   ) { }
  
 
   ngOnInit() {
+  }
+  ngAfterViewInit() {
+    this.cdRef.detectChanges();
   }
 }

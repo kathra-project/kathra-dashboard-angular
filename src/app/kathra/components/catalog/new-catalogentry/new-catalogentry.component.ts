@@ -61,9 +61,8 @@ export class NewCatalogEntryComponent implements OnInit {
     
     this.submiting = true;
     this.catalogEntriesSvc.addEntryToCatalogFromTemplate(this.templateSelected).subscribe((catalogEntry) => {
-      console.log(catalogEntry)
-      this.submiting = true;
       this.catalogEntryCreated = catalogEntry;
+      this.notifs.success("Catalog entry creating",  "Catalog entry '" + this.catalogEntryCreated.name + "' is creating");
       this.checkStatus();
     }, (err) => {
       this.notifs.error("Exception", err);
@@ -75,12 +74,14 @@ export class NewCatalogEntryComponent implements OnInit {
     let subscription = timer(0, 3000).subscribe( x => {
       this.catalogEntriesSvc.getCatalogEntry(this.catalogEntryCreated.id).subscribe((catalogEntry) => {
         if (this.kathraStatus.isReady(catalogEntry)) {
-          this.notifs.success("Catalog entry created",  "Catalog entry " + this.catalogEntryCreated.name + " has been created successfully");
+          this.notifs.success("Catalog entry created",  "Catalog entry '" + this.catalogEntryCreated.name + "' has been created successfully");
           subscription.unsubscribe();
+          this.submiting = true;
         }
         if (this.kathraStatus.isError(catalogEntry)) {
           this.notifs.error("Error",  "An error happened while creating the catalog entry " + this.catalogEntryCreated.name );
           subscription.unsubscribe();
+          this.submiting = true;
         }
       });
     });
