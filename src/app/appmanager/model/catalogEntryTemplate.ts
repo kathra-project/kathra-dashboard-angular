@@ -18,6 +18,10 @@ export interface CatalogEntryTemplate {
      */
     name?: string;
     /**
+     * Template Label
+     */
+    label?: string;
+    /**
      * CodeGen Argument
      */
     arguments?: Array<CatalogEntryTemplateArgument>;

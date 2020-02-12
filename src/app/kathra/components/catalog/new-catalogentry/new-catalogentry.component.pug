@@ -10,7 +10,7 @@ form([formGroup]="basicInfoForm")
           label(for="template") Step 1 - Select a template
           select((change)="selectTemplate($event.target.value)" name="template")
             option(selected value="") Choose a template
-            option(*ngFor="let template of templates", [value]="template.name") {{ template.name }}
+            option(*ngFor="let template of templates", [value]="template.name") {{ template.label }}
 
 
         .col(*ngIf="templateSelected")
@@ -18,10 +18,10 @@ form([formGroup]="basicInfoForm")
           .argument(*ngFor="let argument of templateSelected.arguments")
             div([ngSwitch]="argument.key")
               .row(*ngSwitchCase="'NAME'")
-                label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
+                label(for="{{argument.key}}" ) {{ argument.label | titlecase }}
                 input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
               .row(*ngSwitchCase="'DESCRIPTION'")
-                label(for="{{argument.key}}" ) {{ argument.key | titlecase }}
+                label(for="{{argument.key}}" ) {{ argument.label | titlecase }}
                 input(formControlName="{{argument.key}}" type="text" name="{{argument.key}}" )
               .row(*ngSwitchCase="'GROUP_PATH'")
                 label(for="{{argument.key}}" ) Team
@@ -38,7 +38,7 @@ form([formGroup]="basicInfoForm")
                   option(selected value="") Choose a version
                   option(*ngFor="let v of implementationVersions", [value]="v.id") {{ v.version }}
               .row(*ngSwitchDefault)
-                label(for="argument.key" ) {{ argument.key | titlecase }}
+                label(for="argument.key" ) {{ argument.label | titlecase }}
                 input( type="text" id="argument.key" name="argument.name")
 
     .controls
