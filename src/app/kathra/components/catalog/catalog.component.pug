@@ -5,19 +5,19 @@
       .radio.filter
         label Internal
         .checkbox
-          input(type="checkbox" formControlName="internal" id="internal", (change)="refreshFilters()")
+          input(type="checkbox" formControlName="internal" id="internal", (change)="updateFilters()")
           label(for="internal")
       .radio.filter
         label External
         .checkbox
-          input(type="checkbox" formControlName="external" id="internal", (change)="refreshFilters()")
+          input(type="checkbox" formControlName="external" id="internal", (change)="updateFilters()")
           label(for="external")
 
     .flex-filler
 
   .search
     .sgm2.icon.input
-      input([(ngModel)]="filter", (change)="refreshFilters()" placeholder="Search & filter")
+      input([(ngModel)]="filter", (change)="updateFilters()" placeholder="Search & filter")
       i.search.icon
 
 router-outlet
@@ -43,11 +43,13 @@ router-outlet
   .drawer.platforms(*ngIf="false")
 
   .tabs
+    .tab.disabled.previous(*ngIf="currentPage == 0") <-
     .tab.previous(*ngIf="currentPage > 0", (click)="previous()") <-
     .splitter
     .tab.current {{currentPage + 1}}
     .splitter
-    .tab.next(*ngIf="currentPage < pagesCount", (click)="next()") ->
+    .tab.disabled.next(*ngIf="!(currentPage < pagesCount - 1)") ->
+    .tab.next(*ngIf="currentPage < pagesCount - 1", (click)="next()") ->
 
 kathra-modal(id="app-details")
   .modal

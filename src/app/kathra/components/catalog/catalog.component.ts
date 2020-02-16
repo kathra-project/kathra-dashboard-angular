@@ -55,6 +55,7 @@ export class CatalogComponent implements OnInit {
 
   updateFilters($event){
     this.filters = $event;
+    this.currentPage = 0;
     this.refreshFilters();
   }
   refreshFilters(){
@@ -124,6 +125,8 @@ export class CatalogComponent implements OnInit {
       return;
     }
     this.focusedCatalogEntry = catalogEntry;
+    this.focusedCatalogEntryPackage = null;
+    this.focusedCatalogEntryPackageVersion = null;
     this.loadCatalogEntryPackage(catalogEntry.packages[0]);
     this.modals.open("app-details");
   }
