@@ -64,8 +64,6 @@ export class CatalogueExplorerComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.selectedApps);
   }
 
   get filteredApps(){

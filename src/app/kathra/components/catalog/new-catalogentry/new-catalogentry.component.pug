@@ -41,6 +41,21 @@ form([formGroup]="basicInfoForm")
                 label(for="argument.key" ) {{ argument.label | titlecase }}
                 input( type="text" id="argument.key" name="argument.name")
 
+      .row(*ngIf="this.catalogEntryCreated")
+        .col
+          .row
+            .label Status :
+            .strong.value {{ catalogEntryCreated.status }}
+          .row
+            .PENDING(*ngIf="this.kathraStatus.isCreating(this.catalogEntryCreated)")
+              .status.green.loader
+              span.label This operations may take a few minutes.    
+            .READY(*ngIf="this.kathraStatus.isReady(this.catalogEntryCreated)")
+              i.status.info.green.checkmark.icon
+              span.label Catalog entry is created
+            .READY(*ngIf="this.kathraStatus.isError(this.catalogEntryCreated)")
+              i.status.info.red.remove.icon
+              span.label An error occured
     .controls
       .button.hidden
       .button.hidden

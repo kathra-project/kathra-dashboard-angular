@@ -37,10 +37,17 @@ router-outlet
   .drawer.apps
     .filtered.view
       .content
-        kathra-app(*ngFor="let catalogEntry of catalogEntriesFiltred", [appId]="catalogEntry.providerId", [catalogEntryPackage]="catalogEntry", (click)="loadDetails(catalogEntry)")
+        kathra-app(*ngFor="let catalogEntry of catalogEntriesFiltred", [appId]="catalogEntry.providerId", [catalogEntry]="catalogEntry", (click)="loadDetails(catalogEntry)")
 
   .drawer.bundles(*ngIf="false")
   .drawer.platforms(*ngIf="false")
+
+  .tabs
+    .tab.previous(*ngIf="currentPage > 0", (click)="previous()") <-
+    .splitter
+    .tab.current {{currentPage + 1}}
+    .splitter
+    .tab.next(*ngIf="currentPage < pagesCount", (click)="next()") ->
 
 kathra-modal(id="app-details")
   .modal
@@ -63,6 +70,8 @@ kathra-modal(id="app-details")
               a.disabled.deploy
                 i.cogs.icon
                 .text Deploy
+              select.packages((change)="loadCatalogEntryPackageVersion($event.target.value)")
+                option(*ngFor="let p of focusedCatalogEntry?.packages", [value]="p") {{ p.packageType }}
               select.versions((change)="loadCatalogEntryPackageVersion($event.target.value)")
                 option(*ngFor="let v of focusedCatalogEntryPackage?.versions", [value]="v.version") {{ v.version }}
 

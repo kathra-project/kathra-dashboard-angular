@@ -19,7 +19,7 @@
             label(for="expl_all_apps_check")
       .apps
         .app(*ngFor="let app of catalogEntries")
-          kathra-app([appId]="app.providerId", [catalogEntryPackage]="app", [display]="'compact'")
+          kathra-app([appId]="app.providerId", [catalogEntry]="app", [display]="'compact'")
           .selector
             input(type="checkbox" id="{{'expl_' + app.providerId + '_check'}}", (change)="updateSelection($event, app.providerId)")
             label(for="{{'expl_' + app.providerId + '_check'}}")

@@ -1,19 +1,19 @@
 .app
   .header
     .content
-      .image(*ngIf="catalogEntryPackage.catalogEntry != null && catalogEntryPackage.catalogEntry.icon != null")
-        img.logo([src]="catalogEntryPackage.catalogEntry.icon", onerror="this.style.display='none'")
-      .name(*ngIf="catalogEntryPackage.catalogEntry != null" title="{{ catalogEntryPackage.catalogEntry.name }}")
-        .text {{ catalogEntryPackage.catalogEntry.name }}
+      .image(*ngIf="catalogEntry != null && catalogEntry.icon != null")
+        img.logo([src]="catalogEntry.icon", onerror="this.style.display='none'")
+      .name(*ngIf="catalogEntry != null" title="{{ catalogEntry.name }}")
+        .text {{ catalogEntry.name }}
       .controls(*ngIf="display != 'compact'")
         .favorite
           i.fav.yellow.empty.star.icon
-        .select(*ngIf="catalogEntryPackage.catalogEntry && catalogEntryPackage.catalogEntry.status == 'READY'")
+        .select(*ngIf="catalogEntry && catalogEntry.status == 'READY'")
           i.green.check.circle.outline.icon
-        .select(*ngIf="catalogEntryPackage.catalogEntry && (catalogEntryPackage.catalogEntry.status == 'PENDING' || catalogEntryPackage.catalogEntry.status == 'UPDATING')")
+        .select(*ngIf="catalogEntry && (catalogEntry.status == 'PENDING' || catalogEntry.status == 'UPDATING')")
           i.yellow.check.circle.outline.icon
-        .select(*ngIf="catalogEntryPackage.catalogEntry && catalogEntryPackage.catalogEntry.status == 'ERROR'")
+        .select(*ngIf="catalogEntry && catalogEntry.status == 'ERROR'")
           i.red.check.circle.outline.icon
-  .footer(*ngIf="display != 'compact' && catalogEntryPackage.versions != null && catalogEntryPackage.catalogEntry != null")
-    .cat([style.backgroundColor]="color.normal") {{ catalogEntryPackage.versions[0].version }}
-    .infos([style.backgroundColor]="color.light") {{ catalogEntryPackage.catalogEntry.description }}
+  .footer(*ngIf="display != 'compact' && catalogEntry.packages[0].versions != null && catalogEntry != null")
+    .cat([style.backgroundColor]="color.normal") {{ catalogEntry.packages[0].versions[0].version }}
+    .infos([style.backgroundColor]="color.light") {{ catalogEntry.description }}

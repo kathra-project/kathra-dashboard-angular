@@ -20,7 +20,7 @@ export class KathraAppComponent implements OnInit {
   @Input()
     appId: string;
   @Input()
-    catalogEntryPackage: CatalogEntryPackage;
+    catalogEntry: CatalogEntry;
   @Input()
     display: string = DisplayEnum.Normal;
 
@@ -49,12 +49,5 @@ export class KathraAppComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*
-    this.app = this.K8sModel.k8sApplications.filter(item => item.id == this.appId)[0];
-    this.color.normal = this.getAppColor(this.app.licence, 'normal');
-    this.color.light = this.getAppColor(this.app.licence, 'light');
-
-    (<HTMLElement>this.elRef.nativeElement).classList.add(this.display);
-    */
   }
 }

@@ -73,6 +73,7 @@ export class NewCatalogEntryComponent implements OnInit {
   checkStatus(){
     let subscription = timer(0, 3000).subscribe( x => {
       this.catalogEntriesSvc.getCatalogEntry(this.catalogEntryCreated.id).subscribe((catalogEntry) => {
+        this.catalogEntryCreated = catalogEntry
         if (this.kathraStatus.isReady(catalogEntry)) {
           this.notifs.success("Catalog entry created",  "Catalog entry '" + this.catalogEntryCreated.name + "' has been created successfully");
           subscription.unsubscribe();

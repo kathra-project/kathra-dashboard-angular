@@ -9,6 +9,7 @@ import { SidebarsService } from '../../../kathra-sidebars';
 import { ModalComponent, ModalsService } from '../../../kathra-modals';
 import { CatalogEntriesService, CatalogEntryPackage, CatalogEntryPackageVersion, CatalogEntry, GroupsService, Group } from '../../../appmanager';
 import { group } from '@angular/animations';
+import { Observable, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'kathra-catalog',
@@ -28,10 +29,13 @@ export class CatalogComponent implements OnInit {
     none: undefined
   };
 
+  currentPage: number = 0;
+  pageSize: number = 40;
+  pagesCount: number = 0;
   teams = [];
   filteredApps: Array<K8sApplication> = this.k8sModel.k8sApplications;
-  catalogEntries: Array<CatalogEntryPackage>; 
-  catalogEntriesFiltred: Array<CatalogEntryPackage>; 
+  catalogEntries: Array<CatalogEntry>; 
+  catalogEntriesFiltred: Array<CatalogEntry>; 
 
   @Input() 
   data: {};
@@ -54,15 +58,18 @@ export class CatalogComponent implements OnInit {
     this.refreshFilters();
   }
   refreshFilters(){
+    let index = 0;
     this.catalogEntriesFiltred = []
     for(var i in this.catalogEntries) {
       var entry = this.catalogEntries[i];
-      if (!this.filter) {
+      if (!this.filter || (entry && entry.name && entry.name.match(this.filter))) {
+          if (index >= this.pageSize*this.currentPage && index < this.pageSize*(this.currentPage+1)) {
           this.catalogEntriesFiltred.push(entry);
-      } else if (entry.catalogEntry && entry.catalogEntry.name && entry.catalogEntry.name.match(this.filter)) {
-          this.catalogEntriesFiltred.push(entry);
+          }
+          index++;
       }
     }
+    this.pagesCount = index/this.pageSize;
   }
 
   hasAllKeywords(app, keywords){
@@ -93,6 +100,15 @@ export class CatalogComponent implements OnInit {
     }
   }
 
+  next() {
+    this.currentPage++;
+    this.refreshFilters();
+  }
+  previous() {
+    this.currentPage--;
+    this.refreshFilters();
+  }
+
   filterCat($event, cat:string){
     let cats = <NodeListOf<HTMLElement>>document.querySelectorAll('kathra-catalog .catalog-content .cat-filter a.cat');
     for(let i=0; i<cats.length; i++){
@@ -102,21 +118,29 @@ export class CatalogComponent implements OnInit {
     this.catFilter = cat;
   }
 
-  loadDetails(catalogEntryPackage: CatalogEntryPackage){
-    this.focusedCatalogEntry = catalogEntryPackage.catalogEntry;
-    this.focusedCatalogEntryPackage = catalogEntryPackage;
-    this.focusedCatalogEntryPackageVersion = catalogEntryPackage.versions[0];
+  loadDetails(catalogEntry: CatalogEntry){
+    if (!catalogEntry || !catalogEntry.packages || !catalogEntry.packages[0]) {
+      console.warn(catalogEntry)
+      return;
+    }
+    this.focusedCatalogEntry = catalogEntry;
+    this.loadCatalogEntryPackage(catalogEntry.packages[0]);
+    this.modals.open("app-details");
+  }
 
+  loadCatalogEntryPackage(catalogEntryPackage: CatalogEntryPackage) {
+    this.focusedCatalogEntryPackage = catalogEntryPackage;
     this.catalogEntriesSvc.getCatalogEntryPackageFromProviderId(this.focusedCatalogEntryPackage.providerId).subscribe(item => {
       this.focusedCatalogEntryPackage = item;
-    })
-    this.loadCatalogEntryPackageVersion(this.focusedCatalogEntryPackageVersion.version)
-    this.modals.open("app-details");
+      this.focusedCatalogEntryPackageVersion = this.focusedCatalogEntryPackage.versions[0];
+      this.loadCatalogEntryPackageVersion(this.focusedCatalogEntryPackageVersion.version)
+    });
   }
 
   loadCatalogEntryPackageVersion(version: string) {
     this.focusedCatalogEntryPackageVersion.documentation = "loading..."
     this.catalogEntriesSvc.getCatalogEntryPackageFromProviderIdAndVersion(this.focusedCatalogEntryPackage.providerId, version).subscribe(item => {
+      console.log(item)
       this.focusedCatalogEntryPackageVersion = item.versions[0];
     })
   }
@@ -124,12 +148,18 @@ export class CatalogComponent implements OnInit {
   ngOnInit() {
     this.sbService.closeAll();
 
+    let entries = this.catalogEntriesSvc.getCatalogEntries();
+    let packages = this.catalogEntriesSvc.getCatalogEntryPackages();
+    forkJoin([entries, packages]).subscribe(results => {
+      this.catalogEntries = results[0];
+      this.catalogEntries.forEach(entry => {
+        entry.packages = entry.packages.map(pckg => {
+          let pckgFound = results[1].find(i => i.providerId === pckg.providerId);
+          return pckgFound ? pckgFound : pckg;
+        })
+      });
+      this.refreshFilters();
 
-    this.catalogEntriesSvc.getCatalogEntryPackages().subscribe((data) => {
-      this.catalogEntries = data;
-      this.catalogEntriesFiltred = data
-    }, (err) => {
-      this.catalogEntries = [];
     });
 
     this.teams = [];
