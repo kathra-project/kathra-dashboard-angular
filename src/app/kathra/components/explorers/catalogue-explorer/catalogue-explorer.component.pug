@@ -18,11 +18,11 @@
             input(type="checkbox" id="expl_all_apps_check", (change)="updateSelection($event, 'ALL')")
             label(for="expl_all_apps_check")
       .apps
-        .app(*ngFor="let app of filteredApps")
-          kathra-app([appId]="app.id", [display]="'compact'")
+        .app(*ngFor="let app of catalogEntries")
+          kathra-app([appId]="app.providerId", [catalogEntry]="app", [display]="'compact'")
           .selector
-            input(type="checkbox" id="{{'expl_' + app.id + '_check'}}", (change)="updateSelection($event, app.id)")
-            label(for="{{'expl_' + app.id + '_check'}}")
+            input(type="checkbox" id="{{'expl_' + app.providerId + '_check'}}", (change)="updateSelection($event, app.providerId)")
+            label(for="{{'expl_' + app.providerId + '_check'}}")
     .tab-content.pinned
 
   .button.add((click)="addSelectedAppsToEnv()") ADD TO ENVIRONMENT

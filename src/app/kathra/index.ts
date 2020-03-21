@@ -9,6 +9,7 @@ export { KathraControlComponent } from './components/kathra/kathra-control/kathr
 
 export { ApplicationsComponent } from './components/applications/applications.component';
 export { NewAppComponent } from './components/applications/new-app/new-app.component';
+export { NewCatalogEntryComponent } from './components/catalog/new-catalogentry/new-catalogentry.component';
 export { AppHomeComponent } from './components/applications/app-home/app-home.component';
 export { ComponentDetailsComponent } from './components/applications/component-details/component-details.component';
 

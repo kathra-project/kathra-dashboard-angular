@@ -8,6 +8,7 @@ import { EnvironmentsComponent } from './components/environments/environments.co
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { DatasourcesComponent } from './components/datasources/datasources.component';
 import { NewAppComponent } from './components/applications/new-app/new-app.component';
+import { NewCatalogEntryComponent } from './components/catalog/new-catalogentry/new-catalogentry.component';
 import { KathraControlComponent } from './components/kathra/kathra-control/kathra-control.component';
 import { KathraComponent } from './components/kathra/kathra.component';
 import { KathraDataModule } from '../kathra-data';
@@ -15,6 +16,8 @@ import { KathraToolsModule } from '../kathra-tools';
 import { KathraModalsModule } from '../kathra-modals';
 import { KathraSidebarsModule } from '../kathra-sidebars';
 import { AppHomeComponent } from './components/applications/app-home/app-home.component';
+
+import { NgxMdModule } from 'ngx-md';
 
 import { NewEnvService } from './services/new-env.service';
 import { NewAppService } from './services/new-app.service';
@@ -38,6 +41,7 @@ import { SourceRepositoryWidgetComponent } from './components/applications/imple
 
 @NgModule({
   imports: [
+    NgxMdModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -56,6 +60,7 @@ import { SourceRepositoryWidgetComponent } from './components/applications/imple
     DatasourcesComponent,
     KathraControlComponent,
     NewAppComponent,
+    NewCatalogEntryComponent,
     AppHomeComponent,
     EnvironmentsDashboardComponent,
     NewEnvComponent,

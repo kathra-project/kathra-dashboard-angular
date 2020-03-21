@@ -8,5 +8,5 @@ before_script:
 build_image:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com/
-    - docker build -t registry.gitlab.com/kathra/kathra/kathra-services/kathra-dashboard/angular/kathra-dashboard-angular:$CI_COMMIT_REF_NAME .
-    - docker push registry.gitlab.com/kathra/kathra/kathra-services/kathra-dashboard/angular/kathra-dashboard-angular:$CI_COMMIT_REF_NAME
+    - docker build . -t registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME

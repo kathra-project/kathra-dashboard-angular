@@ -1,49 +1,32 @@
 .filters.inline.form
-  form.other-filters([formGroup]="licence")
+  form.other-filters([formGroup]="sources")
     .source-filters
       .label SOURCES
       .radio.filter
-        label SystemX
+        label Internal
         .checkbox
-          input(type="checkbox" formControlName="irtsystemx" id="irtsystemx", (change)="refreshFilters()")
-          label(for="irtsystemx")
+          input(type="checkbox" formControlName="internal" id="internal", (change)="updateFilters()")
+          label(for="internal")
       .radio.filter
-        label Open Source
+        label External
         .checkbox
-          input(type="checkbox" formControlName="opensource" id="opensource", (change)="refreshFilters()")
-          label(for="opensource")
-      .radio.filter
-        label Partners
-        .checkbox
-          input(type="checkbox" formControlName="partners" id="partners", (change)="refreshFilters()")
-          label(for="partners")
+          input(type="checkbox" formControlName="external" id="internal", (change)="updateFilters()")
+          label(for="external")
 
     .flex-filler
 
-    .categories.list((click)="toggleList('categories')")
-      .title CATEGORIES
-      i.large.angle.down.icon
-      .categories.list.content
-        .by-char(*ngFor="let catChar of appsCategoriesByChar(true) | asArray")
-          .color.bubble([ngClass]="{small: catChar.value == null}")
-            .text {{ catChar.key }}
-          .category(*ngFor="let cat of catChar.value")
-            .name {{ cat }}
+  .search
+    .sgm2.icon.input
+      input([(ngModel)]="filter", (change)="updateFilters()" placeholder="Search & filter")
+      i.search.icon
 
-    .teams.list.disabled
-      .title TEAMS
-      i.large.angle.down.icon
-      .teams.list.content
-        .by-char(*ngFor="let catChar of appsTeamsByChar(true) | asArray")
-          .color.bubble([ngClass]="{small: catChar.value == null}")
-            .text {{ catChar.key }}
-          .category(*ngFor="let cat of catChar.value")
-            .name {{ cat }}
-  
-  .multi-filter
-    kathra-filter([filters]="[{values:appsCategories(false), prefix: 'cat'}, {values:teams, prefix: 'team'}]", [placeholder]="'Search & filter the catalog...'", (onFilteringOptsRefresh)="updateFilters($event)")
+router-outlet
 
 .catalog-content
+  a.button.create.new.catalogentry([routerLink]="['/kathra', 'catalog', 'new']")
+    i.plus.icon
+    | Create a new catalog entry
+
   .tabs
     .tab.apps.selected APPLICATIONS
     .splitter
@@ -52,18 +35,21 @@
     .disabled.tab.platforms PLATFORMS
 
   .drawer.apps
-    .filtered.view.cats(*ngIf="displayMode == 'by-cat'")
-      .category-by-char(*ngFor="let catChar of appsCategoriesByChar() | asArray")
-        .color.bubble
-          .text {{ catChar.key }}
-        .category(*ngFor="let cat of catChar.value")
-            .title
-              .name {{ cat }}
-            .content
-              kathra-app(*ngFor="let app of catalogAppsByCat(cat)", [appId]="app.id", (click)="loadDetails(app.id)")
-  
+    .filtered.view
+      .content
+        kathra-app(*ngFor="let catalogEntry of catalogEntriesFiltred", [appId]="catalogEntry.providerId", [catalogEntry]="catalogEntry", (click)="loadDetails(catalogEntry)")
+
   .drawer.bundles(*ngIf="false")
   .drawer.platforms(*ngIf="false")
+
+  .tabs
+    .tab.disabled.previous(*ngIf="currentPage == 0") <-
+    .tab.previous(*ngIf="currentPage > 0", (click)="previous()") <-
+    .splitter
+    .tab.current {{currentPage + 1}}
+    .splitter
+    .tab.disabled.next(*ngIf="!(currentPage < pagesCount - 1)") ->
+    .tab.next(*ngIf="currentPage < pagesCount - 1", (click)="next()") ->
 
 kathra-modal(id="app-details")
   .modal
@@ -71,23 +57,29 @@ kathra-modal(id="app-details")
       .modal-closer((click)="modals.close('app-details')")
         i.large.remove.icon
       .modal-header
-        .title {{ focusedApp?.name }}
-      .content
-        .infos
-          .col
-            img([src]="focusedApp?.iconUrl")
+        .title {{ focusedCatalogEntry?.name }} - {{ focusedCatalogEntryPackageVersion?.version }}
+      .catalog-item-content.container
+        .infos.row
+          .col.info
+            img(*ngIf="focusedCatalogEntry && focusedCatalogEntry.icon", [src]="focusedCatalogEntry?.icon" onerror="this.style.display='none'")
             .buttons
-              a.website(target="_blank" href="{{focusedApp?.websiteUrl}}")
+              a.website(*ngIf="focusedCatalogEntryPackage && focusedCatalogEntryPackage.metadata && focusedCatalogEntryPackage.metadata.website", target="_blank" href="{{focusedCatalogEntryPackage?.metadata?.website}}")
                 i.eye.icon
                 .text Website
-              a.disabled.doc
+              a.doc(*ngIf="focusedCatalogEntryPackage && focusedCatalogEntryPackage.metadata && focusedCatalogEntryPackage.metadata.sourceUrl", target="_blank" href="{{focusedCatalogEntryPackage?.metadata?.sourceUrl}}")
                 i.file.alternate.icon
-                .text Documentation
-              a.disabled.test
+                .text Source
+              a.disabled.deploy
                 i.cogs.icon
-                .text Test
+                .text Deploy
+              select.packages((change)="loadCatalogEntryPackageVersion($event.target.value)")
+                option(*ngFor="let p of focusedCatalogEntry?.packages", [value]="p") {{ p.packageType }}
+              select.versions((change)="loadCatalogEntryPackageVersion($event.target.value)")
+                option(*ngFor="let v of focusedCatalogEntryPackage?.versions", [value]="v.version") {{ v.version }}
+
           .col.desc
-            p {{ focusedApp?.description }}
-        .row 
+            p {{ focusedCatalogEntry?.description }}
+            ngx-md([data]="focusedCatalogEntryPackageVersion?.documentation")
+        .row.row
           
   .modal-background

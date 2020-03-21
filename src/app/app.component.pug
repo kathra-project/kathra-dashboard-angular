@@ -7,7 +7,7 @@ ng-container.kathra-root(*ngIf="keycloakReady && applicationReady")
 
 	.error(*ngIf="applicationError", style="text-align: center; margin-top: 80px; color: whitesmoke;")
 		div Internal Server Error :(
-		i (Please verify you have a Gitlab account and your login is correct)
+		i (Application manager is not ready, see logs)
 	.sgm-main-layout(*ngIf="!applicationError")
 		router-outlet
 	simple-notifications([options]="notifsOptions")
