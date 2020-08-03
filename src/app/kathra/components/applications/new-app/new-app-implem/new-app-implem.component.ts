@@ -18,6 +18,7 @@ export class NewAppImplemComponent implements OnInit {
 
   implemForm: FormGroup;
   isValidated: boolean = false;
+  subscription;
   
   constructor(
     private newApp: NewAppService,
@@ -65,15 +66,15 @@ export class NewAppImplemComponent implements OnInit {
   }
 
   updateImplemStatusInterval(idImplem){
-    let subscription = timer(0, 3000).subscribe( x => {
+    this.subscription = timer(0, 3000).subscribe( x => {
       this.refreshImplemStatus(idImplem)
       if( this.kathraStatus.isDone(this.newApp.implem) ){
         if(this.isImplemReady()){
           this.notifs.success("Implementation created",  "Implementation " + idImplem + " has been created successfully");
-        }else if(this.kathraStatus.isError(this.newApp.implem)){
+        } else if(this.kathraStatus.isError(this.newApp.implem)){
           this.notifs.error("Exception",  "An error happened while creating the implementation " + idImplem );
         }
-        subscription.unsubscribe();
+        this.subscription.unsubscribe();
       }
     });
   }
@@ -113,5 +114,9 @@ export class NewAppImplemComponent implements OnInit {
     if(this.newApp.api == null){
       this.router.navigate(["/", "kathra", "applications"]);
     }
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }
