@@ -29,7 +29,7 @@
     "bootstrap": "^4.4.1",
     "cookie-parser": "^1.4.4",
     "core-js": "^2.5.10",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "highlight.js": "^9.16.2",
     "keycloak-angular": "^6.0.0",
     "keycloak-js": "^6.0.0",
